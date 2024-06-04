@@ -3,7 +3,7 @@ package controller;
 import javafx.event.ActionEvent;
 import javafx.scene.control.TextField;
 
-public class SignUpController
+public class ProfileManagementController
 {
     @javafx.fxml.FXML
     private TextField txtField_userName;
@@ -18,14 +18,6 @@ public class SignUpController
 
     @javafx.fxml.FXML
     public void initialize() {
-    }
-
-    @Deprecated
-    public void signUpOnAction(ActionEvent actionEvent) {
-    }
-
-    @Deprecated
-    public void logInOnAction(ActionEvent actionEvent) {
     }
 
     @javafx.fxml.FXML

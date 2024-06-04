@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="495.0" prefWidth="391.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ProfileManagementController">
+   <children>
+      <Pane prefHeight="495.0" prefWidth="391.0">
+         <children>
+            <Label layoutX="116.0" layoutY="46.0" prefHeight="46.0" prefWidth="160.0" text="Update profile">
+               <font>
+                  <Font name="Arial Bold" size="23.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txtField_userName" layoutX="119.0" layoutY="129.0" text="👤  Username" />
+            <TextField fx:id="txtField_email" layoutX="120.0" layoutY="203.0" text="📧   Email" />
+            <Button layoutX="122.0" layoutY="347.0" mnemonicParsing="false" onAction="#updateOnAction" prefHeight="25.0" prefWidth="149.0" text="Update" />
+            <TextField fx:id="txtField_password" layoutX="120.0" layoutY="242.0" text="Password" />
+            <TextField fx:id="txtField_confirmPassword" layoutX="119.0" layoutY="278.0" text="Confirm Password" />
+            <TextField fx:id="txtField_idUser" layoutX="120.0" layoutY="165.0" text="🆔   Cédula" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

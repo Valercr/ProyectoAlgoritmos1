@@ -1,14 +1,11 @@
 package controller;
 
 import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
-public class UserMaintenanceController
+public class CourseMaintenanceController
 {
-    @javafx.fxml.FXML
-    private Button addOnAction;
     @javafx.fxml.FXML
     private TextField searchTxtField;
     @javafx.fxml.FXML
@@ -20,6 +17,10 @@ public class UserMaintenanceController
 
     @javafx.fxml.FXML
     public void searchOnAction(ActionEvent actionEvent) {
+    }
+
+    @javafx.fxml.FXML
+    public void addOnAction(ActionEvent actionEvent) {
     }
 
     @javafx.fxml.FXML

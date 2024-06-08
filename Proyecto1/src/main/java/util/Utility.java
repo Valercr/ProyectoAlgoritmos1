@@ -1,10 +1,8 @@
 package util;
 
-import domain.BTree;
-import domain.list.CircularDoublyLinkedList;
-import domain.list.SinglyLinkedList;
-import domain.queue.LinkedQueue;
-import domain.stack.LinkedStack;
+import ucr.proyecto1.domain.list.CircularDoublyLinkedList;
+import ucr.proyecto1.domain.list.SinglyLinkedList;
+import ucr.proyecto1.domain.tree.BTree;
 
 import java.text.DecimalFormat;
 import java.util.Random;
@@ -26,7 +24,7 @@ public class Utility {
     public static String show(int[] a, int size) {
         String result="";
         for (int i = 0; i < size; i++) {
-            result+= STR."\{a[i]} ";
+            result+= a[i];
         }
         return result;
     }
@@ -55,15 +53,9 @@ public class Utility {
             case "SinglyLinkendList":
                 SinglyLinkedList s1 = (SinglyLinkedList)a; SinglyLinkedList s2 = (SinglyLinkedList)b;
                 return s1==s2?0:-1;
-            case "LinkedQueue":
-                LinkedQueue l1 = (LinkedQueue)a; LinkedQueue l2 = (LinkedQueue)b;
-                return l1==l2?0:-1;
             case "CircularDoublyLinkedList":
                 CircularDoublyLinkedList cdl1 = (CircularDoublyLinkedList)a; CircularDoublyLinkedList cdl2 = (CircularDoublyLinkedList)b;
                 return cdl1==cdl2?0:-1;
-            case "LinkedStack":
-                LinkedStack ls1 = (LinkedStack)a; LinkedStack ls2 = (LinkedStack)b;
-                return ls1==ls2?0:-1;
             case "BTree":
                 BTree bt1 = (BTree)a; BTree bt2 = (BTree)b;
                 return bt1==bt2?0:-1;
@@ -76,10 +68,8 @@ public class Utility {
         if(a instanceof String && b instanceof String) return "String";
         if(a instanceof Character && b instanceof Character) return "Character";
         if(a instanceof SinglyLinkedList && b instanceof SinglyLinkedList) return "SinglyLinkendList";
-        if(a instanceof LinkedQueue && b instanceof LinkedQueue) return "LinkedQueue";
         if(a instanceof CircularDoublyLinkedList && b instanceof CircularDoublyLinkedList) return "CircularDoublyLinkedList";
         if(a instanceof BTree && b instanceof BTree) return "BTree";
-        if(a instanceof LinkedStack && b instanceof LinkedStack) return "LinkedStack";
         return "Unknown";
     }
 }

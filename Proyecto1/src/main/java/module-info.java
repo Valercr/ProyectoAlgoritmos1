@@ -2,6 +2,7 @@ module ac.cr.ucr.proyecto1 {
     requires javafx.controls;
     requires javafx.fxml;
     requires org.jdom2;
+    requires java.mail;
 
 
     opens ucr.proyecto1 to javafx.fxml;

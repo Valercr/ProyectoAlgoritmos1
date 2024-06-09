@@ -3,9 +3,8 @@ package ucr.proyecto1.domain.XMLData;
 import ucr.proyecto1.domain.data.User;
 import ucr.proyecto1.domain.list.CircularDoublyLinkedList;
 import ucr.proyecto1.domain.list.ListException;
-import ucr.proyecto1.domain.list.Node;
 
-import java.net.PasswordAuthentication;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Properties;
@@ -13,6 +12,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.mail.*;
 import javax.mail.internet.*;
+
+import static ucr.proyecto1.domain.TXTData.ArchiveInformationUser.FILE_NAME;
 
 public class UserXMLData {
 
@@ -30,12 +31,15 @@ public class UserXMLData {
     public UserXMLData(){
         props = new Properties();
         this.usersList = new CircularDoublyLinkedList();
+        loadUsersFromFile(); // Cargar los usuarios desde el archivo al inicializar.
     }
 
-    public void addUser(int id, String name, String email, String password) throws AddressException {
+    public void addUser(int id, String name, String email, String password) throws MessagingException {
         User user = new User(id, name, email, password);
         usersList.add(user);
         emailNotification(email, id, password);
+        appendUserToFile(user); // Guardar el nuevo usuario en el archivo.
+        sendEmail(); // Enviar el correo electrónico después de notificar.
     }
 
 
@@ -82,26 +86,36 @@ public class UserXMLData {
         System.out.println("Email sent successfully.");
     }
 
-    public boolean logIn(int id, String password) {
-        try {
-            Node node = usersList.getNode(usersList.indexOf(new User(id, null, null, null)));
-            if (node != null) {
-                User user = (User) node.getData();
-                if (user.getPassword().equals(password)) {
-                    System.out.println("Log in successful.");
-                    return true;
+    private void loadUsersFromFile() { // Método para cargar los usuarios desde el archivo de texto.
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] tokens = line.split(",");
+                if (tokens.length == 4) {
+                    int id = Integer.parseInt(tokens[0]);
+                    String name = tokens[1];
+                    String email = tokens[2];
+                    String password = tokens[3];
+                    usersList.add(new User(id, name, email, password));
                 }
             }
-        } catch (ListException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("Incorrect user or password.");
-        return false;
+    }
+
+    private void appendUserToFile(User user) { // Método para agregar un usuario al archivo de texto.
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true))) {
+            writer.write(user.getId() + "," + user.getName() + "," + user.getEmail() + "," + user.getPassword());
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void updateInformation(int id, String name, String email) {
         try {
-            Node node = usersList.getNode(usersList.indexOf(new User(id, null, null, null)));
+            CircularDoublyLinkedList.Node node = usersList.getNode(usersList.indexOf(new User(id, null, null, null)));
             if (node != null) {
                 User user = (User) node.getData();
                 if (name != null && !name.isEmpty()) {
@@ -110,7 +124,8 @@ public class UserXMLData {
                 if (email != null && !email.isEmpty()) {
                     user.setEmail(email);
                 }
-                System.out.println("Information updated successful.");
+                System.out.println("Information updated successfully.");
+                saveUsersToFile(); // Guardar la lista actualizada en el archivo.
             } else {
                 System.out.println("User not found.");
             }
@@ -121,12 +136,13 @@ public class UserXMLData {
 
     public void changePassword(int id, String prevPassword, String newPassword) {
         try {
-            Node node = usersList.getNode(usersList.indexOf(new User(id, null, null, null)));
+            CircularDoublyLinkedList.Node node = usersList.getNode(usersList.indexOf(new User(id, null, null, null)));
             if (node != null) {
                 User user = (User) node.getData();
                 if (user.getPassword().equals(prevPassword)) {
                     user.setPassword(newPassword);
-                    System.out.println("Password successful updated.");
+                    System.out.println("Password successfully updated.");
+                    saveUsersToFile(); // Guardar la lista actualizada en el archivo.
                 } else {
                     System.out.println("Previous password incorrect.");
                 }
@@ -138,5 +154,35 @@ public class UserXMLData {
         }
     }
 
-}
+    private void saveUsersToFile() { // Método para guardar toda la lista de usuarios en el archivo de texto.
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
+            CircularDoublyLinkedList.Node current = usersList.getFirstNode();
+            if (current == null) return;
 
+            do {
+                User user = (User) current.getData();
+                writer.write(user.getId() + "," + user.getName() + "," + user.getEmail() + "," + user.getPassword());
+                writer.newLine();
+                current = current.getNext();
+            } while (current != usersList.getFirstNode());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+//    public boolean logIn(int id, String password) {
+//        try {
+//            Node node = usersList.getNode(usersList.indexOf(new User(id, null, null, null)));
+//            if (node != null) {
+//                User user = (User) node.getData();
+//                if (user.getPassword().equals(password)) {
+//                    System.out.println("Log in successful.");
+//                    return true;
+//                }
+//            }
+//        } catch (ListException e) {
+//            e.printStackTrace();
+//        }
+//        System.out.println("Incorrect user or password.");
+//        return false;
+//    }

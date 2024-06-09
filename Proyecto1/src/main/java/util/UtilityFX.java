@@ -28,9 +28,10 @@ public class UtilityFX {
         Alert myalert = new Alert(Alert.AlertType.INFORMATION);
         myalert.setTitle(title);
         myalert.setHeaderText(headerText);
+        myalert.getDialogPane().setPrefSize(400, 300);
+        myalert.showAndWait();
+
         DialogPane dialogPane = myalert.getDialogPane();
-        String css = HelloApplication.class.getResource("dialog.css").toExternalForm();
-        dialogPane.getStylesheets().add(css);
         dialogPane.getStyleClass().add("myDialog");
         return myalert;
     }
@@ -39,9 +40,6 @@ public class UtilityFX {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle(title);
         dialog.setHeaderText(headerText);
-        String css = HelloApplication.class.getResource("dialog.css").toExternalForm();
-        dialog.getEditor().getStylesheets().add(css);
         return dialog;
     }
-
 }

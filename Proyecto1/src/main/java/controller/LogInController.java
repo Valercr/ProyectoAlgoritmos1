@@ -2,6 +2,7 @@ package controller;
 
 import javafx.event.ActionEvent;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 
 public class LogInController
 {
@@ -9,6 +10,8 @@ public class LogInController
     private TextField txtField_Password;
     @javafx.fxml.FXML
     private TextField txtField_emailAddress;
+    @javafx.fxml.FXML
+    private BorderPane bp;
 
     @javafx.fxml.FXML
     public void initialize() {

@@ -19,6 +19,7 @@ public class LogInController
 
     @javafx.fxml.FXML
     public void signUpOnAction(ActionEvent actionEvent) {
+        util.UtilityFX.loadPage("signUp.fxml", bp);//Cargar LogIn
     }
 
     @javafx.fxml.FXML

@@ -3,6 +3,7 @@ package ucr.proyecto1.domain.TXTData;
 
 import ucr.proyecto1.domain.data.User;
 import ucr.proyecto1.domain.list.CircularLinkedList;
+import ucr.proyecto1.domain.list.ListException;
 
 import java.io.*;
 import java.util.StringTokenizer;
@@ -53,6 +54,39 @@ public class ArchivoTXTPassword {
             e.printStackTrace();
         }
     }
+
+
+    public boolean authenticateUser(String username, String password) {
+        // Encripta la contraseña proporcionada por el usuario usando el método PasswordEncryption.
+        String encryptedPassword = PasswordEncryption.encryptPassword(password);
+
+        try {
+            // Obtiene el tamaño de la lista circular de usuarios.
+            int size = users.size();
+
+            // Inicia la iteración desde el primer nodo de la lista circular.
+            users.next();
+
+            // Bucle para iterar a través de todos los nodos de la lista circular.
+            for (int i = 0; i < size; i++) {
+                // Obtiene el usuario actual en la lista circular.
+                User user = users.getCurrent();
+
+                // Compara el nombre de usuario y la contraseña encriptada con las de la lista
+                if (user.getName().equals(username) && user.getPassword().equals(encryptedPassword)) {
+                    // Si el nombre de usuario y la contraseña coinciden, retorna true.
+                    return true;
+                }
+                // Mueve al siguiente usuario en la lista
+                users.next();
+            }
+        } catch (ListException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
 
 }
 

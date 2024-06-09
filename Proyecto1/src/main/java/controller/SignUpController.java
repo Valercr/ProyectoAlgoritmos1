@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import ucr.proyecto1.HelloApplication;
+import ucr.proyecto1.domain.TXTData.ArchiveInformationUser;
 import ucr.proyecto1.domain.TXTData.ArchivoTXTPassword;
 import ucr.proyecto1.domain.list.CircularLinkedList;
 import util.UtilityFX;
@@ -21,8 +22,7 @@ public class SignUpController
     private TextField txtField_email;
     @javafx.fxml.FXML
     private TextField txtField_idUser;
-    private CircularLinkedList userList;
-    ArchivoTXTPassword archivoTXTPassword;
+    ArchiveInformationUser archiveInformationUser;
     Alert alert;
     @javafx.fxml.FXML
     private PasswordField passwordField;
@@ -38,7 +38,7 @@ public class SignUpController
     private TextField txtFieldPassword;
 
     public SignUpController() {
-        archivoTXTPassword = new ArchivoTXTPassword();
+        archiveInformationUser = new ArchiveInformationUser();
     }
 
     @javafx.fxml.FXML
@@ -60,7 +60,8 @@ public class SignUpController
         } else if (!password.equals(confirmPassword)) {// Verificar si las contraseñas no coinciden
             alert = util.UtilityFX.alert("Trate de nuevo", "Las contraseñas no coinciden");
         } else // Guardar la información usando la clase ArchivoTXTPassword
-                archivoTXTPassword.registerUser(Integer.parseInt(idUser), username,email, password);
+
+            archiveInformationUser.registerUser(Integer.parseInt(idUser), username,email, password);
     }
 
 
@@ -71,20 +72,20 @@ public class SignUpController
 
     }
 
-    @javafx.fxml.FXML
-    public void changeVisibility(ActionEvent actionEvent) {
-        if (showPassword.isSelected()) {
-            txtFieldPassword.setText(passwordField.getText());
-            txtFieldPassword.setVisible(true);
-            passwordField.setVisible(false);
-            txtFieldConfirmPassword.setText(confirmPasswordField.getText());
-            txtFieldConfirmPassword.setVisible(true);
-            confirmPasswordField.setVisible(false);
-        }
-        txtFieldPassword.setVisible(false);
-        passwordField.setVisible(true);
-        txtFieldConfirmPassword.setVisible(false);
-        confirmPasswordField.setVisible(true);
-
-    }
+//    @javafx.fxml.FXML
+//    public void changeVisibility(ActionEvent actionEvent) {
+//        if (showPassword.isSelected()) {
+//            txtFieldPassword.setText(passwordField.getText());
+//            txtFieldPassword.setVisible(true);
+//            passwordField.setVisible(false);
+//            txtFieldConfirmPassword.setText(confirmPasswordField.getText());
+//            txtFieldConfirmPassword.setVisible(true);
+//            confirmPasswordField.setVisible(false);
+//        }
+//        txtFieldPassword.setVisible(false);
+//        passwordField.setVisible(true);
+//        txtFieldConfirmPassword.setVisible(false);
+//        confirmPasswordField.setVisible(true);
+//
+//    }
 }

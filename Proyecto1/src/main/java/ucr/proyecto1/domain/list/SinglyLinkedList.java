@@ -324,7 +324,7 @@ public class SinglyLinkedList implements List{
         String result = "Singly Linked List Content\n\n";
         Node aux = first;
         while(aux!=null){
-            result+= StringTemplate.STR."\{aux.data}\n ";
+            result+= aux.data;
             aux = aux.next;
         }
         return result;

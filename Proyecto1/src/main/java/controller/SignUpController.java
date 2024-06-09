@@ -1,12 +1,17 @@
 package controller;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import ucr.proyecto1.HelloApplication;
 import ucr.proyecto1.domain.TXTData.ArchivoTXTPassword;
 import ucr.proyecto1.domain.list.CircularLinkedList;
 import util.UtilityFX;
+
+import java.io.IOException;
+
+import static util.UtilityFX.loadPage;
 
 public class SignUpController
 {
@@ -59,11 +64,22 @@ public class SignUpController
 
     }
 
+
+    private void loadPage(String page){
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(page));
+        try {
+            this.bp.setCenter(fxmlLoader.load());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @javafx.fxml.FXML
     public void logInOnAction(ActionEvent actionEvent) {
-        util.UtilityFX.loadPage("controller.LogInController", "logIn.fxml", bp);//Cargar LogIn
-
+        //util.UtilityFX.loadPage("controller.LogInController", "logIn.fxml", bp);//Cargar LogIn
+        loadPage("logIn.fxml");
     }
+
     @javafx.fxml.FXML
     public void changeVisibility(ActionEvent actionEvent) {
         if (showPassword.isSelected()) {

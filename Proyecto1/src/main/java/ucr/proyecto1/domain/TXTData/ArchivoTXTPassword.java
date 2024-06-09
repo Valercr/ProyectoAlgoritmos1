@@ -34,7 +34,7 @@ public class ArchivoTXTPassword {
             while ((line = reader.readLine()) != null) { //continuará ejecutándose hasta que se llegue al final del archivo
                 StringTokenizer tokenizer = new StringTokenizer(line, ","); //dividir la línea leída del archivo en tokens separados por comas
 
-                if (tokenizer.countTokens() == 3) { //asegura que la línea leída del archivo tenga el formato esperado
+                if (tokenizer.countTokens() == 4) { //asegura que la línea leída del archivo tenga el formato esperado
                     int id = Integer.parseInt(tokenizer.nextToken()); //obtener el siguiente token para el id del usuario
                     String name = tokenizer.nextToken(); //obtener el siguiente token para el username
                     String email = tokenizer.nextToken();//obtener el siguiente token para el email
@@ -49,7 +49,7 @@ public class ArchivoTXTPassword {
 
     private void appendUserToFile(User user) { //contiene el nombre de usuario, la contraseña y el rol de un usuario que se va a registrar.
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true))) { //Se asegura de que el archivo se cierre automáticamente
-            writer.write(user.getName() + "," + user.getPassword() + "," + user.getRole()); // escribe la información del usuario en el archivo.
+            writer.write(user.getId() + "," + user.getName()+ "," + user.getEmail()+ ","+user.getPassword()); // escribe la información del usuario en el archivo.
             writer.newLine(); //asegura que los datos de cada usuario se escriban en una línea separada.
         } catch (IOException e) {
             e.printStackTrace();

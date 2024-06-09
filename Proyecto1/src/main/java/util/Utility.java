@@ -7,7 +7,6 @@ import ucr.proyecto1.domain.tree.BTree;
 import java.text.DecimalFormat;
 import java.util.Random;
 
-import static java.lang.StringTemplate.STR;
 
 public class Utility {
 

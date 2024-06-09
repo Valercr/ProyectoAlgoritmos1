@@ -12,7 +12,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.mail.*;
 import javax.mail.internet.*;
-
 import static ucr.proyecto1.domain.TXTData.ArchiveInformationUser.FILE_NAME;
 
 public class UserXMLData {

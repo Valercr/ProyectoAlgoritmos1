@@ -64,6 +64,7 @@ public class SignUpController
         } else // Guardar la información usando la clase ArchivoTXTPassword
 
             archiveInformationUser.registerUser(Integer.parseInt(idUser), username,email, password);
+            user.setEmail(email);
     }
 
 
@@ -74,20 +75,20 @@ public class SignUpController
 
     }
 
-//    @javafx.fxml.FXML
-//    public void changeVisibility(ActionEvent actionEvent) {
-//        if (showPassword.isSelected()) {
-//            txtFieldPassword.setText(passwordField.getText());
-//            txtFieldPassword.setVisible(true);
-//            passwordField.setVisible(false);
-//            txtFieldConfirmPassword.setText(confirmPasswordField.getText());
-//            txtFieldConfirmPassword.setVisible(true);
-//            confirmPasswordField.setVisible(false);
-//        }
-//        txtFieldPassword.setVisible(false);
-//        passwordField.setVisible(true);
-//        txtFieldConfirmPassword.setVisible(false);
-//        confirmPasswordField.setVisible(true);
-//
-//    }
+    @javafx.fxml.FXML
+    public void changeVisibility(ActionEvent actionEvent) {
+        if (showPassword.isSelected()) {
+            txtFieldPassword.setText(passwordField.getText());
+            txtFieldPassword.setVisible(true);
+            passwordField.setVisible(false);
+            txtFieldConfirmPassword.setText(confirmPasswordField.getText());
+            txtFieldConfirmPassword.setVisible(true);
+            confirmPasswordField.setVisible(false);
+        }
+        txtFieldPassword.setVisible(false);
+        passwordField.setVisible(true);
+        txtFieldConfirmPassword.setVisible(false);
+        confirmPasswordField.setVisible(true);
+
+    }
 }

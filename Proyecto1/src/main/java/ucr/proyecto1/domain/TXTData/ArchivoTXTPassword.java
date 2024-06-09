@@ -10,17 +10,16 @@ import java.util.StringTokenizer;
 
 public class ArchivoTXTPassword {
 
-    private static final String FILE_NAME = "users.txt"; // almacena la ruta del archivo de texto que se usará para guardar los usuarios.
+    private static final String FILE_NAME = "usersLogIn.txt"; // almacena la ruta del archivo de texto que se usará para guardar los usuarios.
     private CircularLinkedList users = new CircularLinkedList(); //almacenar los usuarios en memoria durante la ejecución del programa.
 
     public ArchivoTXTPassword() {
         loadUsersFromFile(); //cargar los usuarios existentes del archivo de texto en la lista circular
     }
 
-
-    public void registerUser(int id, String name, String email, String password) {
+    public void registerUser(String username, String password, String role) {
         String encryptedPassword = PasswordEncryption.encryptPassword(password); //se utiliza para encriptar la contraseña del usuario antes de guardarla.
-        User user = new User(id,name, email,encryptedPassword); //Se crea un nuevo objeto User con los datos proporcionados y la contraseña encriptada.
+        User user = new User(username, encryptedPassword, role); //Se crea un nuevo objeto User con los datos proporcionados y la contraseña encriptada.
         users.append(user); //Se agrega el nuevo usuario a la lista circular
         appendUserToFile(user);  //agregar el nuevo usuario al archivo de texto.
     }
@@ -34,12 +33,11 @@ public class ArchivoTXTPassword {
             while ((line = reader.readLine()) != null) { //continuará ejecutándose hasta que se llegue al final del archivo
                 StringTokenizer tokenizer = new StringTokenizer(line, ","); //dividir la línea leída del archivo en tokens separados por comas
 
-                if (tokenizer.countTokens() == 4) { //asegura que la línea leída del archivo tenga el formato esperado
-                    int id = Integer.parseInt(tokenizer.nextToken()); //obtener el siguiente token para el id del usuario
-                    String name = tokenizer.nextToken(); //obtener el siguiente token para el username
-                    String email = tokenizer.nextToken();//obtener el siguiente token para el email
-                    String encryptedPassword = tokenizer.nextToken();//obtener el siguiente token para la contraseña
-                    users.append(new User(id,name, email,encryptedPassword)); //agregar el nuevo objeto a la lista.
+                if (tokenizer.countTokens() == 3) { //asegura que la línea leída del archivo tenga el formato esperado
+                    String name = tokenizer.nextToken(); //obtener el siguiente token para el nombre de usario
+                    String password = tokenizer.nextToken(); //obtener el siguiente token para la contraseña
+                    String role = tokenizer.nextToken(); //obtener el siguiente token para el rol
+                    users.append(new User(name, password, role)); //agregar el nuevo objeto a la lista.
                 }
             }
         } catch (IOException e) {
@@ -49,13 +47,12 @@ public class ArchivoTXTPassword {
 
     private void appendUserToFile(User user) { //contiene el nombre de usuario, la contraseña y el rol de un usuario que se va a registrar.
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true))) { //Se asegura de que el archivo se cierre automáticamente
-            writer.write(user.getId() + "," + user.getName()+ "," + user.getEmail()+ ","+user.getPassword()); // escribe la información del usuario en el archivo.
+            writer.write(user.getName() + "," + user.getPassword() + "," + user.getRole()); // escribe la información del usuario en el archivo.
             writer.newLine(); //asegura que los datos de cada usuario se escriban en una línea separada.
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 
     public boolean authenticateUser(String email, String password) {
         // Encripta la contraseña proporcionada por el usuario usando el método PasswordEncryption.

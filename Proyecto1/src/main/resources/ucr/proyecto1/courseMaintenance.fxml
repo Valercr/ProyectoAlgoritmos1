@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="bp" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CourseMaintenanceController">
+<BorderPane fx:id="bp" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CourseMaintenanceController">
    <center>
       <AnchorPane prefHeight="575.0" prefWidth="689.0">
          <children>
@@ -21,7 +28,15 @@
                         <Image url="@../../images/courses.png" />
                      </image>
                   </ImageView>
-                  <TableView fx:id="tableView" layoutX="48.0" layoutY="136.0" prefHeight="287.0" prefWidth="558.0" />
+                  <TableView fx:id="tableView" layoutX="48.0" layoutY="136.0" prefHeight="287.0" prefWidth="609.0">
+                     <columns>
+                        <TableColumn fx:id="nameTColumn" prefWidth="107.99993515014648" text="Name" />
+                        <TableColumn fx:id="idTColumn" prefWidth="75.0" text="ID" />
+                        <TableColumn fx:id="durationTColumn" prefWidth="75.0" text="Duration" />
+                        <TableColumn fx:id="difficultTColumn" prefWidth="111.33331298828125" text="Difficulty Level" />
+                        <TableColumn fx:id="instructorIdTColumn" prefWidth="111.33331298828125" text="Instructor ID" />
+                        <TableColumn fx:id="descriptionTColumn" prefWidth="126.33331298828125" text="Description" />
+                     </columns></TableView>
                   <Button layoutX="142.0" layoutY="452.0" mnemonicParsing="false" onAction="#addOnAction" prefHeight="37.0" prefWidth="81.0" text="Add" />
                   <Button layoutX="246.0" layoutY="452.0" mnemonicParsing="false" onAction="#modifyOnAction" prefHeight="37.0" prefWidth="81.0" text="Modify" />
                   <Button layoutX="460.0" layoutY="452.0" mnemonicParsing="false" onAction="#deleteOnAction" prefHeight="37.0" prefWidth="81.0" text="Delete" />

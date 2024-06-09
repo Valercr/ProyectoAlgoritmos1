@@ -2,6 +2,7 @@ package controller;
 
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -16,6 +17,18 @@ public class CourseMaintenanceController
     private BorderPane bp;
     @javafx.fxml.FXML
     private Button btnSearchCourse;
+    @javafx.fxml.FXML
+    private TableColumn descriptionTColumn;
+    @javafx.fxml.FXML
+    private TableColumn idTColumn;
+    @javafx.fxml.FXML
+    private TableColumn instructorIdTColumn;
+    @javafx.fxml.FXML
+    private TableColumn difficultTColumn;
+    @javafx.fxml.FXML
+    private TableColumn nameTColumn;
+    @javafx.fxml.FXML
+    private TableColumn durationTColumn;
 
     @javafx.fxml.FXML
     public void initialize() {

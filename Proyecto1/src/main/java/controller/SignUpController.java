@@ -7,6 +7,7 @@ import javafx.scene.layout.BorderPane;
 import ucr.proyecto1.HelloApplication;
 import ucr.proyecto1.domain.TXTData.ArchiveInformationUser;
 import ucr.proyecto1.domain.TXTData.ArchivoTXTPassword;
+import ucr.proyecto1.domain.data.User;
 import ucr.proyecto1.domain.list.CircularLinkedList;
 import util.UtilityFX;
 
@@ -36,6 +37,7 @@ public class SignUpController
     private TextField txtFieldConfirmPassword;
     @javafx.fxml.FXML
     private TextField txtFieldPassword;
+    User user;
 
     public SignUpController() {
         archiveInformationUser = new ArchiveInformationUser();

@@ -18,9 +18,9 @@ public class ArchivoTXTPassword {
     }
 
 
-    public void registerUser(String username, String password, String role) {
+    public void registerUser(int id, String name, String email, String password) {
         String encryptedPassword = PasswordEncryption.encryptPassword(password); //se utiliza para encriptar la contraseña del usuario antes de guardarla.
-        User user = new User(username, encryptedPassword, role); //Se crea un nuevo objeto User con los datos proporcionados y la contraseña encriptada.
+        User user = new User(id,name, email,encryptedPassword); //Se crea un nuevo objeto User con los datos proporcionados y la contraseña encriptada.
         users.append(user); //Se agrega el nuevo usuario a la lista circular
         appendUserToFile(user);  //agregar el nuevo usuario al archivo de texto.
     }
@@ -35,10 +35,11 @@ public class ArchivoTXTPassword {
                 StringTokenizer tokenizer = new StringTokenizer(line, ","); //dividir la línea leída del archivo en tokens separados por comas
 
                 if (tokenizer.countTokens() == 3) { //asegura que la línea leída del archivo tenga el formato esperado
-                    String username = tokenizer.nextToken(); //obtener el siguiente token para el nombre de usario
-                    String password = tokenizer.nextToken(); //obtener el siguiente token para la contraseña
-                    String role = tokenizer.nextToken(); //obtener el siguiente token para el rol
-                    users.append(new User(username, password, role)); //agregar el nuevo objeto a la lista.
+                    int id = Integer.parseInt(tokenizer.nextToken()); //obtener el siguiente token para el id del usuario
+                    String name = tokenizer.nextToken(); //obtener el siguiente token para el username
+                    String email = tokenizer.nextToken();//obtener el siguiente token para el email
+                    String encryptedPassword = tokenizer.nextToken();//obtener el siguiente token para la contraseña
+                    users.append(new User(id,name, email,encryptedPassword)); //agregar el nuevo objeto a la lista.
                 }
             }
         } catch (IOException e) {
@@ -56,7 +57,7 @@ public class ArchivoTXTPassword {
     }
 
 
-    public boolean authenticateUser(String username, String password) {
+    public boolean authenticateUser(String email, String password) {
         // Encripta la contraseña proporcionada por el usuario usando el método PasswordEncryption.
         String encryptedPassword = PasswordEncryption.encryptPassword(password);
 
@@ -73,7 +74,7 @@ public class ArchivoTXTPassword {
                 User user = users.getCurrent();
 
                 // Compara el nombre de usuario y la contraseña encriptada con las de la lista
-                if (user.getName().equals(username) && user.getPassword().equals(encryptedPassword)) {
+                if (user.getEmail().equals(email) && user.getPassword().equals(encryptedPassword)) {
                     // Si el nombre de usuario y la contraseña coinciden, retorna true.
                     return true;
                 }

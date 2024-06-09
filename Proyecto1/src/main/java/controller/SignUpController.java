@@ -61,23 +61,14 @@ public class SignUpController
             alert = util.UtilityFX.alert("Trate de nuevo", "Las contraseñas no coinciden");
         } else // Guardar la información usando la clase ArchivoTXTPassword
                 archivoTXTPassword.registerUser(Integer.parseInt(idUser), username,email, password);
-
     }
 
 
-    private void loadPage(String page){
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(page));
-        try {
-            this.bp.setCenter(fxmlLoader.load());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     @javafx.fxml.FXML
     public void logInOnAction(ActionEvent actionEvent) {
-        //util.UtilityFX.loadPage("controller.LogInController", "logIn.fxml", bp);//Cargar LogIn
-        loadPage("logIn.fxml");
+        util.UtilityFX.loadPage("logIn.fxml", bp);//Cargar LogIn
+
     }
 
     @javafx.fxml.FXML

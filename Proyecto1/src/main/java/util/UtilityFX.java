@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 
 import ucr.proyecto1.HelloApplication;
@@ -23,7 +24,14 @@ public class UtilityFX {
             throw new RuntimeException(e);
         }
     }
-
+    public static void loadPage(String page, BorderPane bp){
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(page));
+        try {
+            bp.setCenter(fxmlLoader.load());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public static Alert alert(String title, String headerText){
         Alert myalert = new Alert(Alert.AlertType.INFORMATION);
         myalert.setTitle(title);

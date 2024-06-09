@@ -5,6 +5,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 
 public class AddCourseController
 {
@@ -20,6 +21,8 @@ public class AddCourseController
     private TextField txtField_id;
     @javafx.fxml.FXML
     private TextField txtField_instructorId;
+    @javafx.fxml.FXML
+    private BorderPane bp;
 
     @javafx.fxml.FXML
     public void initialize() {
@@ -27,6 +30,7 @@ public class AddCourseController
 
     @javafx.fxml.FXML
     public void cancelOnAction(ActionEvent actionEvent) {
+        util.UtilityFX.loadPage("courseMaintenance.fxml", bp);
     }
 
     @javafx.fxml.FXML

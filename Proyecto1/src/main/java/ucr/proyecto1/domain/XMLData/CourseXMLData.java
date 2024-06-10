@@ -81,8 +81,9 @@ public class CourseXMLData {
         boolean courseFound = false;
         for (Element courseElement : courseElements) {
             if (courseElement.getAttributeValue("id").equals(String.valueOf(courseId))) {
+                Course courseToRemove = buildCourseFromElement(courseElement);
                 root.removeContent(courseElement);
-                courseTree.remove(new Course(courseId, null, null, null, null, 0));
+                courseTree.remove(courseToRemove);
                 save();
                 courseFound = true;
                 break;
@@ -92,6 +93,7 @@ public class CourseXMLData {
             throw new IllegalArgumentException("The course to remove does not exist in the XML.");
         }
     }
+
 
     public Course findCourseById(int courseId) {
         List<Element> courseElements = root.getChildren("course");

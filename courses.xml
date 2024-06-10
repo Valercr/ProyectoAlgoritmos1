@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <courses>
-    <course id="1">
-        <name>Course 1</name>
-        <description>Introduction to Programming</description>
-        <length>10 weeks</length>
-        <level>low</level>
-        <instructorId>100</instructorId>
-    </course>
-    <course id="2">
-        <name>Course 2</name>
-        <description>Data Structures</description>
-        <length>8 weeks</length>
-        <level>high</level>
-        <instructorId>101</instructorId>
-    </course>
-    <course id="3">
-        <name>Course 3</name>
-        <description>Algorithms</description>
-        <length>12 weeks</length>
-        <level>medium</level>
-        <instructorId>102</instructorId>
-    </course>
+  <course id="1">
+    <name>Course 1</name>
+    <description>Introduction to Programming</description>
+    <length>10 weeks</length>
+    <level>low</level>
+    <instructorId>100</instructorId>
+  </course>
+  <course id="2">
+    <name>Course 2</name>
+    <description>Test</description>
+    <length>10 weeks</length>
+    <level>low</level>
+    <instructorId>101</instructorId>
+  </course>
+  <course id="3">
+    <name>Course 3</name>
+    <description>Algorithms</description>
+    <length>12 weeks</length>
+    <level>medium</level>
+    <instructorId>102</instructorId>
+  </course>
 </courses>
-

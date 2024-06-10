@@ -1,39 +1,62 @@
 package controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import ucr.proyecto1.domain.TXTData.ArchiveInformationUser;
 import ucr.proyecto1.domain.data.User;
-import ucr.proyecto1.domain.list.ListException;
 
 import java.io.IOException;
+import java.util.List;
 
-public class UserMaintenanceController
-{
+public class UserMaintenanceController {
     @javafx.fxml.FXML
-    private TableView tableView;
+    private TableView<User> tableView; // Specify the type parameter for TableView
     @javafx.fxml.FXML
-    private TableColumn roleTColumn;
+    private TableColumn<User, String> roleTColumn; // Specify the type parameters for TableColumn
     @javafx.fxml.FXML
-    private TableColumn emailTColumn;
+    private TableColumn<User, String> emailTColumn;
     @javafx.fxml.FXML
-    private TableColumn idTColumn;
+    private TableColumn<User, Integer> idTColumn;
     @javafx.fxml.FXML
-    private TableColumn nameTColumn;
+    private TableColumn<User, String> nameTColumn;
     Alert alert;
 
     private ArchiveInformationUser archiveInformationUser;
     @javafx.fxml.FXML
     private BorderPane bp;
+    private ObservableList<User> userList = FXCollections.observableArrayList();
 
     @javafx.fxml.FXML
     public void initialize() {
+        archiveInformationUser = new ArchiveInformationUser();
 
+        // Set the cell value factories with proper data types
+        roleTColumn.setCellValueFactory(new PropertyValueFactory<>("role"));
+        emailTColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
+        idTColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        nameTColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+
+        loadCourseData(); // Load the data when initializing
+    }
+
+    private void loadCourseData() {
+        try {
+            List<User> users = archiveInformationUser.getUserList();
+            userList.setAll(users);
+            tableView.setItems(userList);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
     }
 
     @javafx.fxml.FXML
@@ -43,27 +66,20 @@ public class UserMaintenanceController
 
     @javafx.fxml.FXML
     public void modifyOnAction(ActionEvent actionEvent) {
-        // Obtener el usuario seleccionado en la tabla
-        User selectedUser = (User) tableView.getSelectionModel().getSelectedItem();
+        User selectedUser = tableView.getSelectionModel().getSelectedItem();
 
         if (selectedUser == null) {
-            // Si no se ha seleccionado ningún usuario, mostrar un mensaje de error
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Por favor, seleccione un usuario para modificar.");
             alert.showAndWait();
         } else {
-            // Cargar la interfaz de modificación de usuario con los datos del usuario seleccionado
             FXMLLoader loader = new FXMLLoader(getClass().getResource("modifyUser.fxml"));
             Parent root;
             try {
                 root = loader.load();
                 ModifyUserController controller = loader.getController();
-
-                // Pasar los datos del usuario seleccionado al controlador de modificación de usuario
                 controller.setUser(selectedUser);
-
-                // Mostrar la interfaz de modificación de usuario
                 Scene scene = new Scene(root);
                 Stage stage = new Stage();
                 stage.setScene(scene);
@@ -77,23 +93,16 @@ public class UserMaintenanceController
 
     @javafx.fxml.FXML
     public void deleteOnAction(ActionEvent actionEvent) {
+        int selectedIndex = tableView.getSelectionModel().getSelectedIndex();
 
-            //Obtiene el índice seleccionado en la tabla
-            int selectedIndex = tableView.getSelectionModel().getSelectedIndex();
-
-            //Verifica si se seleccionó algún elemento
-            if (selectedIndex >= 0) {
-                //Elimina el cliente de la lista
-                archiveInformationUser.deleteUser(selectedIndex + 1); // Se suma 1 porque la lista está basada en índices comenzando desde 1
-
-                //Elimina el cliente de la tabla
-                tableView.getItems().remove(selectedIndex);
-            } else {
-                //Muestra un mensaje si no se seleccionó ningún elemento
-                alert.setContentText("Please select a customer to remove.");
-                alert.showAndWait();
-            }
-
+        if (selectedIndex >= 0) {
+            User selectedUser = tableView.getItems().get(selectedIndex);
+            archiveInformationUser.deleteUser(selectedUser.getId()); // Use user ID to delete
+            tableView.getItems().remove(selectedIndex);
+        } else {
+            alert.setContentText("Please select a customer to remove.");
+            alert.showAndWait();
+        }
     }
 
     @javafx.fxml.FXML

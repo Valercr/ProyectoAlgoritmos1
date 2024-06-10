@@ -15,6 +15,8 @@ import javax.mail.internet.MimeMessage;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -191,5 +193,21 @@ public class ArchiveInformationUser {
         }
     }
 
+    public CircularDoublyLinkedList getUsers() {
+        return users;
+    }
+
+    // Add a method to convert CircularDoublyLinkedList to List<User>
+    public List<User> getUserList() {
+        List<User> userList = new ArrayList<>();
+        if (!users.isEmpty()) {
+            CircularDoublyLinkedList.Node current = users.getFirstNode();
+            do {
+                userList.add((User) current.getData());
+                current = current.getNext();
+            } while (current != users.getFirstNode());
+        }
+        return userList;
+    }
 
 }

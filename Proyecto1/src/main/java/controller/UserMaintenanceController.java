@@ -1,10 +1,17 @@
 package controller;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 import ucr.proyecto1.domain.TXTData.ArchiveInformationUser;
+import ucr.proyecto1.domain.data.User;
 import ucr.proyecto1.domain.list.ListException;
+
+import java.io.IOException;
 
 public class UserMaintenanceController
 {
@@ -36,7 +43,36 @@ public class UserMaintenanceController
 
     @javafx.fxml.FXML
     public void modifyOnAction(ActionEvent actionEvent) {
+        // Obtener el usuario seleccionado en la tabla
+        User selectedUser = (User) tableView.getSelectionModel().getSelectedItem();
 
+        if (selectedUser == null) {
+            // Si no se ha seleccionado ningún usuario, mostrar un mensaje de error
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Por favor, seleccione un usuario para modificar.");
+            alert.showAndWait();
+        } else {
+            // Cargar la interfaz de modificación de usuario con los datos del usuario seleccionado
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("modifyUser.fxml"));
+            Parent root;
+            try {
+                root = loader.load();
+                ModifyUserController controller = loader.getController();
+
+                // Pasar los datos del usuario seleccionado al controlador de modificación de usuario
+                controller.setUser(selectedUser);
+
+                // Mostrar la interfaz de modificación de usuario
+                Scene scene = new Scene(root);
+                Stage stage = new Stage();
+                stage.setScene(scene);
+                stage.setTitle("Modificar Usuario");
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @javafx.fxml.FXML
@@ -62,7 +98,6 @@ public class UserMaintenanceController
 
     @javafx.fxml.FXML
     public void addOnAction(ActionEvent actionEvent) {
-
         util.UtilityFX.loadPage("addUser.fxml", bp);
     }
 }

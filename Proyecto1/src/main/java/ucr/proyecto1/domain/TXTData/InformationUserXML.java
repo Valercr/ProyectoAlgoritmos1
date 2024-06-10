@@ -1,56 +1,87 @@
 package ucr.proyecto1.domain.TXTData;
 
-import ucr.proyecto1.domain.XMLData.UserXMLData;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 import ucr.proyecto1.domain.data.User;
 import ucr.proyecto1.domain.list.CircularDoublyLinkedList;
 import ucr.proyecto1.domain.list.ListException;
 
-import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import java.io.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-public class ArchiveInformationUser {
-    public static final String FILE_NAME = "users.txt"; // almacena la ruta del archivo de texto que se usará para guardar los usuarios.
-    private CircularDoublyLinkedList users = new CircularDoublyLinkedList(); //almacenar los usuarios en memoria durante la ejecución del programa.
+public class InformationUserXML {
+    public static final String FILE_NAME = "users.xml"; // Archivo XML para guardar usuarios.
+    private CircularDoublyLinkedList users = new CircularDoublyLinkedList(); // Almacenar los usuarios en memoria.
 
-    public ArchiveInformationUser() {
-        loadUsersFromFile(); //cargar los usuarios existentes del archivo de texto en la lista circular
+    public InformationUserXML() {
+        loadUsersFromFile(); // Cargar los usuarios existentes del archivo XML en la lista circular.
     }
 
     public void registerUser(int id, String name, String email, String password) {
-        String encryptedPassword = PasswordEncryption.encryptPassword(password); //se utiliza para encriptar la contraseña del usuario antes de guardarla.
-        User user = new User(id,name, email,encryptedPassword); //Se crea un nuevo objeto User con los datos proporcionados y la contraseña encriptada.
-        users.append(user); //Se agrega el nuevo usuario a la lista circular
-        appendUserToFile(user);  //agregar el nuevo usuario al archivo de texto.
+        String encryptedPassword = PasswordEncryption.encryptPassword(password); // Encriptar la contraseña.
+        User user = new User(id, name, email, encryptedPassword); // Crear un nuevo usuario.
+        users.append(user); // Agregar el usuario a la lista circular.
+        appendUserToFile(user); // Agregar el usuario al archivo XML.
     }
 
     private void loadUsersFromFile() {
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                StringTokenizer tokenizer = new StringTokenizer(line, ",");
-                if (tokenizer.countTokens() == 4) {
-                    int id = Integer.parseInt(tokenizer.nextToken());
-                    String name = tokenizer.nextToken();
-                    String email = tokenizer.nextToken();
-                    String encryptedPassword = tokenizer.nextToken();
-                    users.append(new User(id, name, email, encryptedPassword));
-                    System.out.println("Loaded user: " + id + ", " + name + ", " + email);
-                }
+        File inputFile = new File(FILE_NAME);
+        if (!inputFile.exists()) {
+            return; // Si el archivo no existe, no hacer nada.
+        }
+
+        SAXBuilder saxBuilder = new SAXBuilder();
+        try {
+            Document document = saxBuilder.build(inputFile);
+            Element rootElement = document.getRootElement();
+            List<Element> userList = rootElement.getChildren("user");
+
+            for (Element userElement : userList) {
+                int id = Integer.parseInt(userElement.getChildText("id"));
+                String name = userElement.getChildText("name");
+                String email = userElement.getChildText("email");
+                String encryptedPassword = userElement.getChildText("password");
+                users.append(new User(id, name, email, encryptedPassword));
+                System.out.println("Loaded user: " + id + ", " + name + ", " + email);
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void appendUserToFile(User user) {
+        try {
+            File inputFile = new File(FILE_NAME);
+            Document document;
+            Element rootElement;
+
+            if (inputFile.exists()) {
+                SAXBuilder saxBuilder = new SAXBuilder();
+                document = saxBuilder.build(inputFile);
+                rootElement = document.getRootElement();
+            } else {
+                rootElement = new Element("users");
+                document = new Document(rootElement);
+            }
+
+            Element userElement = new Element("user");
+            userElement.addContent(new Element("id").setText(String.valueOf(user.getId())));
+            userElement.addContent(new Element("name").setText(user.getName()));
+            userElement.addContent(new Element("email").setText(user.getEmail()));
+            userElement.addContent(new Element("password").setText(user.getPassword()));
+
+            rootElement.addContent(userElement);
+
+            XMLOutputter xmlOutput = new XMLOutputter();
+            xmlOutput.setFormat(Format.getPrettyFormat());
+            xmlOutput.output(document, new FileWriter(FILE_NAME));
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -71,47 +102,23 @@ public class ArchiveInformationUser {
         return null;
     }
 
-    private void appendUserToFile(User user) { //contiene el nombre de usuario, la contraseña y el rol de un usuario que se va a registrar.
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true))) { //Se asegura de que el archivo se cierre automáticamente
-            writer.write(user.getId() + "," + user.getName()+ "," + user.getEmail()+ ","+user.getPassword()); // escribe la información del usuario en el archivo.
-            writer.newLine(); //asegura que los datos de cada usuario se escriban en una línea separada.
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
     public boolean authenticateUser(String email, String password) {
-        // Encripta la contraseña proporcionada por el usuario usando el método PasswordEncryption.
         String encryptedPassword = PasswordEncryption.encryptPassword(password);
-
         try {
-            // Obtiene el tamaño de la lista circular de usuarios.
             int size = users.size();
-
-            // Inicia la iteración desde el primer nodo de la lista circular.
             users.next();
-
-            // Bucle para iterar a través de todos los nodos de la lista circular.
             for (int i = 0; i < size; i++) {
-                // Obtiene el usuario actual en la lista circular.
                 User user = users.getCurrent();
-
-                // Compara el nombre de usuario y la contraseña encriptada con las de la lista
                 if (user.getEmail().equals(email) && user.getPassword().equals(encryptedPassword)) {
-                    // Si el nombre de usuario y la contraseña coinciden, retorna true.
                     return true;
                 }
-                // Mueve al siguiente usuario en la lista
                 users.next();
             }
         } catch (ListException e) {
             e.printStackTrace();
         }
-
         return false;
     }
-
 
     public void deleteUser(int id) {
         try {
@@ -133,8 +140,6 @@ public class ArchiveInformationUser {
         users.add(user);
         appendUserToFile(user); // Guardar el nuevo usuario en el archivo.
     }
-
-
 
     public void updateInformation(int id, String name, String email) {
         try {
@@ -177,17 +182,29 @@ public class ArchiveInformationUser {
         }
     }
 
-    private void saveUsersToFile() { // Método para guardar toda la lista de usuarios en el archivo de texto.
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
+    private void saveUsersToFile() {
+        try {
+            Element rootElement = new Element("users");
+            Document document = new Document(rootElement);
+
             CircularDoublyLinkedList.Node current = users.getFirstNode();
             if (current == null) return;
 
             do {
                 User user = (User) current.getData();
-                writer.write(user.getId() + "," + user.getName() + "," + user.getEmail() + "," + user.getPassword());
-                writer.newLine();
+                Element userElement = new Element("user");
+                userElement.addContent(new Element("id").setText(String.valueOf(user.getId())));
+                userElement.addContent(new Element("name").setText(user.getName()));
+                userElement.addContent(new Element("email").setText(user.getEmail()));
+                userElement.addContent(new Element("password").setText(user.getPassword()));
+                rootElement.addContent(userElement);
                 current = current.getNext();
             } while (current != users.getFirstNode());
+
+            XMLOutputter xmlOutput = new XMLOutputter();
+            xmlOutput.setFormat(Format.getPrettyFormat());
+            xmlOutput.output(document, new FileWriter(FILE_NAME));
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -197,7 +214,6 @@ public class ArchiveInformationUser {
         return users;
     }
 
-    // Add a method to convert CircularDoublyLinkedList to List<User>
     public List<User> getUserList() {
         List<User> userList = new ArrayList<>();
         if (!users.isEmpty()) {
@@ -209,5 +225,4 @@ public class ArchiveInformationUser {
         }
         return userList;
     }
-
 }

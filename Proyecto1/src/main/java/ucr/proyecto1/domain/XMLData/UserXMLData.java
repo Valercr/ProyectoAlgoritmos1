@@ -1,10 +1,7 @@
 package ucr.proyecto1.domain.XMLData;
 
-import ucr.proyecto1.domain.data.User;
 import ucr.proyecto1.domain.list.CircularDoublyLinkedList;
-import ucr.proyecto1.domain.list.ListException;
 
-import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Properties;
@@ -12,7 +9,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.mail.*;
 import javax.mail.internet.*;
-import static ucr.proyecto1.domain.TXTData.ArchiveInformationUser.FILE_NAME;
 
 public class UserXMLData {
 

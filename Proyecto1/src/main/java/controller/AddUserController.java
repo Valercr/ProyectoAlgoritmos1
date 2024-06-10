@@ -7,7 +7,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import ucr.proyecto1.domain.TXTData.ArchiveInformationUser;
+import ucr.proyecto1.domain.TXTData.InformationUserXML;
 
 public class AddUserController {
     @FXML
@@ -25,20 +25,18 @@ public class AddUserController {
     @FXML
     private BorderPane bp;
     @FXML
-    private ComboBox<String> cBoxRole; // Assuming cBoxRole contains role names
+    private ComboBox<String> cBoxRole;
 
-    private ArchiveInformationUser archiveInformationUser;
+    private InformationUserXML informationUserXML;
 
     @FXML
     public void initialize() {
-        archiveInformationUser = new ArchiveInformationUser(); // Initialize the ArchiveInformationUser instance
-
+        informationUserXML = new InformationUserXML();
         cBoxRole.getItems().addAll("Administrador", "Usuario", "Inspector");
     }
 
     @FXML
     public void changeVisibility(ActionEvent actionEvent) {
-        // Logic to show/hide password
         if (showPassword.isSelected()) {
             txtFieldPassword.setPromptText(txtFieldPassword.getText());
             txtFieldPassword.setText("");
@@ -58,17 +56,23 @@ public class AddUserController {
             String confirmPassword = txtFieldConfirmPassword.getText();
             String role = cBoxRole.getValue();
 
-            if (!password.equals(confirmPassword)) {
-                showAlert(Alert.AlertType.ERROR, "Password Error", "Passwords do not match!");
+            if (password.isEmpty() || confirmPassword.isEmpty() || name.isEmpty() || email.isEmpty() || role == null) {
+                showAlert(Alert.AlertType.ERROR, "Error", "Todos los campos deben ser llenados.");
                 return;
             }
 
-            archiveInformationUser.registerUser(id, name, email, password);
-            showAlert(Alert.AlertType.INFORMATION, "User Created", "User created successfully!");
+            if (!password.equals(confirmPassword)) {
+                showAlert(Alert.AlertType.ERROR, "Error", "Las contraseñas no coinciden.");
+                return;
+            }
+
+            informationUserXML.registerUser(id, name, email, password);
+            showAlert(Alert.AlertType.INFORMATION, "Éxito", "Usuario creado exitosamente.");
+            clearFields();
         } catch (NumberFormatException e) {
-            showAlert(Alert.AlertType.ERROR, "Input Error", "Invalid user ID format.");
+            showAlert(Alert.AlertType.ERROR, "Error", "El formato del ID del usuario es inválido.");
         } catch (Exception e) {
-            showAlert(Alert.AlertType.ERROR, "Error", "An error occurred: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Error", "Ocurrió un error: " + e.getMessage());
         }
     }
 
@@ -77,12 +81,20 @@ public class AddUserController {
         util.UtilityFX.loadPage("userMaintenance.fxml", bp);
     }
 
-
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private void clearFields() {
+        txtField_idUser.clear();
+        txtField_userName.clear();
+        txtField_email.clear();
+        txtFieldPassword.clear();
+        txtFieldConfirmPassword.clear();
+        cBoxRole.getSelectionModel().clearSelection();
     }
 }

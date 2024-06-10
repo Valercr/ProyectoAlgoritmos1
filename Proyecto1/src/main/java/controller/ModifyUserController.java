@@ -1,61 +1,49 @@
 package controller;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import ucr.proyecto1.domain.TXTData.ArchiveInformationUser;
+import ucr.proyecto1.domain.TXTData.InformationUserXML;
 import ucr.proyecto1.domain.data.User;
 
-public class ModifyUserController
-{
-    @javafx.fxml.FXML
+import java.io.IOException;
+
+public class ModifyUserController {
+    @FXML
     private TextField txtField_userName;
-    @javafx.fxml.FXML
+    @FXML
     private TextField txtField_email;
-    @javafx.fxml.FXML
+    @FXML
     private CheckBox showPassword;
-    @javafx.fxml.FXML
+    @FXML
     private TextField txtField_idUser;
-    @javafx.fxml.FXML
-    private TextField txtFieldPassword;
-    @javafx.fxml.FXML
+    @FXML
     private PasswordField passwordField;
-    @javafx.fxml.FXML
+    @FXML
+    private TextField txtFieldPassword;
+    @FXML
     private BorderPane bp;
 
-    private ArchiveInformationUser archiveInformationUser;
-    private Alert alert;
-    private User selectedUser;
+    private static User userToModify;
 
-    public ModifyUserController() {
-        archiveInformationUser = new ArchiveInformationUser();
+    public static void setUserToModify(User user) {
+        userToModify = user;
     }
 
-    @javafx.fxml.FXML
+    @FXML
     public void initialize() {
+        if (userToModify != null) {
+            txtField_userName.setText(userToModify.getName());
+            txtField_email.setText(userToModify.getEmail());
+            txtField_idUser.setText(String.valueOf(userToModify.getId()));
+        }
     }
 
-    public void setUser(User user) {
-        selectedUser = user;
-        //Establecer los datos del usuario en los campos de la interfaz
-        txtField_userName.setText(selectedUser.getName());
-        txtField_email.setText(selectedUser.getEmail());
-        txtField_idUser.setText(String.valueOf(selectedUser.getId()));
-    }
-
-    @Deprecated
-    public void signUpOnAction(ActionEvent actionEvent) {
-
-    }
-
-    @Deprecated
-    public void logInOnAction(ActionEvent actionEvent) {
-    }
-
-    @javafx.fxml.FXML
+    @FXML
     public void changeVisibility(ActionEvent actionEvent) {
         if (showPassword.isSelected()) {
             txtFieldPassword.setText(passwordField.getText());
@@ -67,12 +55,12 @@ public class ModifyUserController
         }
     }
 
-    @javafx.fxml.FXML
+    @FXML
     public void backOnAction(ActionEvent actionEvent) {
         util.UtilityFX.loadPage("userMaintenance.fxml", bp);
     }
 
-    @javafx.fxml.FXML
+    @FXML
     public void modifyOnAction(ActionEvent actionEvent) {
         String username = txtField_userName.getText();
         String email = txtField_email.getText();
@@ -80,28 +68,33 @@ public class ModifyUserController
         String idUser = txtField_idUser.getText();
 
         if (idUser.isEmpty()) {
-            //Si el ID del usuario está vacío, mostrar un mensaje de error.
-            alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("You must enter a valid user ID");
-            alert.showAndWait();
+            showAlert("Error", "Debe ingresar un ID de usuario válido.");
         } else {
-            int id = Integer.parseInt(idUser);
+            try {
+                int id = Integer.parseInt(idUser);
+                userToModify.setName(username);
+                userToModify.setEmail(email);
+                userToModify.setPassword(password);
 
-            //Actualizar la información del usuario en ArchiveInformationUser
-            archiveInformationUser.updateInformation(id, username, email);
+                // Lógica para actualizar la información del usuario donde sea necesario
 
-            // Mostrar un mensaje de éxito y volver a la página de mantenimiento de usuario
-            alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Éxito");
-            alert.setHeaderText("Usuario modificado exitosamente");
-            alert.showAndWait();
-
-            util.UtilityFX.loadPage("userMaintenance.fxml", bp);
+                showAlert("Éxito", "Usuario modificado exitosamente.");
+                util.UtilityFX.loadPage("userMaintenance.fxml", bp);
+            } catch (NumberFormatException e) {
+                showAlert("Error", "Error al modificar el usuario: " + e.getMessage());
+            }
         }
     }
 
-    @javafx.fxml.FXML
+    @FXML
     public void txtFieldConfirmPassword(ActionEvent actionEvent) {
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

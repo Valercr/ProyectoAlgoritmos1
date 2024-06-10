@@ -28,7 +28,7 @@ public class ModifyCourseController {
 
     @FXML
     public void initialize() {
-        // Inicializa el spinner con valores posibles para la duración del curso.
+        //Inicializa el spinner con valores posibles para la duración del curso.
         SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 52, 1);
         spinnerDuration.setValueFactory(valueFactory);
 

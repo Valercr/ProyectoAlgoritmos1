@@ -6,7 +6,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import ucr.proyecto1.domain.TXTData.ArchiveInformationUser;
+import ucr.proyecto1.domain.TXTData.InformationUserXML;
 import ucr.proyecto1.domain.data.User;
 
 public class SearchUserController {
@@ -21,11 +21,11 @@ public class SearchUserController {
     @FXML
     private BorderPane bp;
 
-    private ArchiveInformationUser archiveInformationUser;
+    private InformationUserXML informationUserXML;
 
     @FXML
     public void initialize() {
-        archiveInformationUser = new ArchiveInformationUser(); // Initialize the ArchiveInformationUser instance
+        informationUserXML = new InformationUserXML(); // Initialize the ArchiveInformationUser instance
     }
 
     @FXML
@@ -37,7 +37,7 @@ public class SearchUserController {
     public void searchOnAction(ActionEvent actionEvent) {
         try {
             int id = Integer.parseInt(txtField_idUser.getText());
-            User user = archiveInformationUser.findUser(id);
+            User user = informationUserXML.findUser(id);
             if (user != null) {
                 txtField_userName.setText(user.getName());
                 txtField_email.setText(user.getEmail());

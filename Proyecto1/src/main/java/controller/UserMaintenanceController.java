@@ -3,6 +3,7 @@ package controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -12,7 +13,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import ucr.proyecto1.domain.TXTData.ArchiveInformationUser;
+import ucr.proyecto1.domain.TXTData.InformationUserXML;
 import ucr.proyecto1.domain.data.User;
 
 import java.io.IOException;
@@ -31,14 +32,15 @@ public class UserMaintenanceController {
     private TableColumn<User, String> nameTColumn;
     Alert alert;
 
-    private ArchiveInformationUser archiveInformationUser;
+
     @javafx.fxml.FXML
+    private InformationUserXML informationUserXML;
     private BorderPane bp;
     private ObservableList<User> userList = FXCollections.observableArrayList();
 
     @javafx.fxml.FXML
     public void initialize() {
-        archiveInformationUser = new ArchiveInformationUser();
+        informationUserXML = new InformationUserXML();
 
         // Set the cell value factories with proper data types
         roleTColumn.setCellValueFactory(new PropertyValueFactory<>("role"));
@@ -46,12 +48,12 @@ public class UserMaintenanceController {
         idTColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameTColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 
-        loadCourseData(); // Load the data when initializing
+        loadUserData();; // Load the data when initializing
     }
 
-    private void loadCourseData() {
+    private void loadUserData() {
         try {
-            List<User> users = archiveInformationUser.getUserList();
+            List<User> users = informationUserXML.getUserList();
             userList.setAll(users);
             tableView.setItems(userList);
         } catch (RuntimeException e) {
@@ -64,44 +66,27 @@ public class UserMaintenanceController {
         util.UtilityFX.loadPage("searchUser.fxml", bp);
     }
 
-    @javafx.fxml.FXML
+    @FXML
     public void modifyOnAction(ActionEvent actionEvent) {
         User selectedUser = tableView.getSelectionModel().getSelectedItem();
-
-        if (selectedUser == null) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Por favor, seleccione un usuario para modificar.");
-            alert.showAndWait();
+        if (selectedUser != null) {
+            ModifyUserController.setUserToModify(selectedUser);
+            util.UtilityFX.loadPage("modifyUser.fxml", bp);
         } else {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("modifyUser.fxml"));
-            Parent root;
-            try {
-                root = loader.load();
-                ModifyUserController controller = loader.getController();
-                controller.setUser(selectedUser);
-                Scene scene = new Scene(root);
-                Stage stage = new Stage();
-                stage.setScene(scene);
-                stage.setTitle("Modificar Usuario");
-                stage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            showAlert("Error", "Por favor, seleccione un usuario para modificar.");
         }
     }
 
-    @javafx.fxml.FXML
+    @FXML
     public void deleteOnAction(ActionEvent actionEvent) {
         int selectedIndex = tableView.getSelectionModel().getSelectedIndex();
 
         if (selectedIndex >= 0) {
             User selectedUser = tableView.getItems().get(selectedIndex);
-            archiveInformationUser.deleteUser(selectedUser.getId()); // Use user ID to delete
+            informationUserXML.deleteUser(selectedUser.getId());
             tableView.getItems().remove(selectedIndex);
         } else {
-            alert.setContentText("Please select a customer to remove.");
-            alert.showAndWait();
+            showAlert("Error", "Por favor, seleccione un usuario para eliminar.");
         }
     }
 
@@ -109,4 +94,14 @@ public class UserMaintenanceController {
     public void addOnAction(ActionEvent actionEvent) {
         util.UtilityFX.loadPage("addUser.fxml", bp);
     }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }
+
+

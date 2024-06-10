@@ -3,7 +3,7 @@ package ucr.proyecto1.domain.list;
 import ucr.proyecto1.domain.data.User;
 
 public class CircularLinkedList {
-    private Node head;
+    public Node head;
     private Node current;
 
 
@@ -43,9 +43,9 @@ public class CircularLinkedList {
         return current != null ? current.data : null;
     }
 
-    private static class Node {
-        User data;
-        Node next;
+    public static class Node {
+        public User data;
+        public Node next;
 
         Node(User data) {
             this.data = data;

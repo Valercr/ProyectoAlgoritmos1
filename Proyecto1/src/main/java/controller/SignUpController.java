@@ -1,18 +1,11 @@
 package controller;
 
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-import ucr.proyecto1.HelloApplication;
-import ucr.proyecto1.domain.TXTData.ArchiveInformationUser;
-import ucr.proyecto1.domain.TXTData.ArchivoTXTPassword;
+import ucr.proyecto1.domain.TXTData.InformationUserXML;
 import ucr.proyecto1.domain.XMLData.UserXMLData;
 import ucr.proyecto1.domain.data.User;
-import ucr.proyecto1.domain.list.CircularLinkedList;
-import util.UtilityFX;
-
-import java.io.IOException;
 
 import static util.UtilityFX.loadPage;
 
@@ -24,7 +17,7 @@ public class SignUpController
     private TextField txtField_email;
     @javafx.fxml.FXML
     private TextField txtField_idUser;
-    ArchiveInformationUser archiveInformationUser;
+    InformationUserXML informationUserXML;
     Alert alert;
     @javafx.fxml.FXML
     private PasswordField passwordField;
@@ -42,7 +35,7 @@ public class SignUpController
     private UserXMLData userXMLData;
 
     public SignUpController() {
-        archiveInformationUser = new ArchiveInformationUser();
+        informationUserXML = new InformationUserXML();
         userXMLData = new UserXMLData();
     }
 
@@ -74,7 +67,7 @@ public class SignUpController
             // Crear un nuevo usuario y guardar la información usando ArchiveInformationUser
             int id = Integer.parseInt(idUser);
             User user = new User(id, username, email, password);
-            archiveInformationUser.registerUser(id, username, email, password);
+            informationUserXML.registerUser(id, username, email, password);
 
             // Enviar correo de confirmación
             userXMLData.sendConfirmationEmail(email, id, password);

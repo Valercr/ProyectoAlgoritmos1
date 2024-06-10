@@ -10,7 +10,6 @@ import javafx.scene.layout.BorderPane;
 import ucr.proyecto1.HelloApplication;
 
 import java.io.IOException;
-
 public class UtilityFX {
 
     public static void loadPage(String className, String page, BorderPane bp){
@@ -24,6 +23,7 @@ public class UtilityFX {
             throw new RuntimeException(e);
         }
     }
+
     public static void loadPage(String page, BorderPane bp){
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(page));
         try {
@@ -32,6 +32,7 @@ public class UtilityFX {
             throw new RuntimeException(e);
         }
     }
+
     public static Alert alert(String title, String headerText){
         Alert myalert = new Alert(Alert.AlertType.INFORMATION);
         myalert.setTitle(title);
@@ -49,5 +50,16 @@ public class UtilityFX {
         dialog.setTitle(title);
         dialog.setHeaderText(headerText);
         return dialog;
+    }
+
+    // Método para cargar una página y devolver su controlador
+    public static <T> T loadPageAndGetController(String page, BorderPane bp) {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(page));
+        try {
+            bp.setCenter(fxmlLoader.load());
+            return fxmlLoader.getController();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

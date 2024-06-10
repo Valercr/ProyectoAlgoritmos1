@@ -5,8 +5,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import ucr.proyecto1.domain.TXTData.ArchiveInformationUser;
-import ucr.proyecto1.domain.TXTData.ArchivoTXTPassword;
+import ucr.proyecto1.domain.TXTData.InformationUserXML;
 
 public class LogInController
 {
@@ -16,7 +15,7 @@ public class LogInController
     private BorderPane bp;
     Alert alert;
 //    ArchivoTXTPassword archivoTXTPassword;
-    ArchiveInformationUser archiveInformationUser;
+    InformationUserXML informationUserXML;
 
     @javafx.fxml.FXML
     private PasswordField passwordField;
@@ -24,7 +23,7 @@ public class LogInController
     @javafx.fxml.FXML
     public void initialize() {
 //        archivoTXTPassword = new ArchivoTXTPassword();
-        archiveInformationUser = new ArchiveInformationUser();
+        informationUserXML = new InformationUserXML();
     }
 
     @javafx.fxml.FXML
@@ -41,7 +40,7 @@ public class LogInController
         else{
 
 //            if (archivoTXTPassword.authenticateUser(email, password))
-                        if (archiveInformationUser.authenticateUser(email, password))
+                        if (informationUserXML.authenticateUser(email, password))
             alert = util.UtilityFX.alert("Bienvenid@", "Inicio de sesion con éxtio");
             else alert = util.UtilityFX.alert("Error", "Usuario o contraseña incorrectos");
         }

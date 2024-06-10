@@ -12,8 +12,8 @@ import ucr.proyecto1.domain.tree.TreeException;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
-
 public class CourseXMLData {
     private String filePath;
     private Element root;
@@ -64,8 +64,8 @@ public class CourseXMLData {
         for (Element courseElement : courseElements) {
             if (courseElement.getAttributeValue("id").equals(String.valueOf(updatedCourse.getId()))) {
                 updateCourseElement(courseElement, updatedCourse);
-                courseTree.remove(updatedCourse);
-                courseTree.add(updatedCourse);
+                courseTree.remove(updatedCourse);  // Ensure old course is removed
+                courseTree.add(updatedCourse);     // Add updated course
                 save();
                 courseFound = true;
                 break;
@@ -78,15 +78,19 @@ public class CourseXMLData {
 
     public void removeCourse(int courseId) throws IOException, TreeException {
         List<Element> courseElements = root.getChildren("course");
+        boolean courseFound = false;
         for (Element courseElement : courseElements) {
             if (courseElement.getAttributeValue("id").equals(String.valueOf(courseId))) {
                 root.removeContent(courseElement);
                 courseTree.remove(new Course(courseId, null, null, null, null, 0));
                 save();
-                return;
+                courseFound = true;
+                break;
             }
         }
-        throw new IllegalArgumentException("The course to remove does not exist in the XML.");
+        if (!courseFound) {
+            throw new IllegalArgumentException("The course to remove does not exist in the XML.");
+        }
     }
 
     public Course findCourseById(int courseId) {
@@ -103,9 +107,12 @@ public class CourseXMLData {
         try {
             return courseTree.inOrderList();
         } catch (TreeException e) {
-            throw new RuntimeException(e);
+            //Manejo de la excepción si el árbol está vacío
+            e.printStackTrace();
+            return new ArrayList<>();
         }
     }
+
 
     private Element createCourseElement(Course course) {
         Element courseElement = new Element("course");

@@ -320,7 +320,7 @@ public class AVL<T extends Comparable<T>> implements Tree {
 
     public List<T> inOrderList() throws TreeException {
         if (isEmpty()) {
-            throw new TreeException("AVL Binary Search Tree is empty");
+            return new ArrayList<>(); // Devuelve una lista vacía en lugar de lanzar una excepción
         }
         List<T> result = new ArrayList<>();
         inOrderTraversal(root, result);

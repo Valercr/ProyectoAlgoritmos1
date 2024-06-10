@@ -10,4 +10,5 @@ module ac.cr.ucr.proyecto1 {
     exports ucr.proyecto1;
     exports controller;
     opens controller to javafx.fxml;
+    opens ucr.proyecto1.domain.data to javafx.base;
 }

@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import org.jdom2.JDOMException;
 import ucr.proyecto1.domain.XMLData.CourseXMLData;
@@ -43,34 +44,33 @@ public class CourseMaintenanceController {
 
     @FXML
     public void initialize() {
-        // Initialize the CourseXMLData
         try {
             courseData = new CourseXMLData("courses.xml");
+
+            idTColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+            nameTColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+            descriptionTColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+            durationTColumn.setCellValueFactory(new PropertyValueFactory<>("length"));
+            difficultTColumn.setCellValueFactory(new PropertyValueFactory<>("level"));
+            instructorIdTColumn.setCellValueFactory(new PropertyValueFactory<>("instructorId"));
+
+            loadCourseData();
         } catch (IOException | JDOMException e) {
             e.printStackTrace();
-            return;
         }
-
-        // Initialize columns
-        idTColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
-        nameTColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
-        descriptionTColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDescription()));
-        durationTColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLength()));
-        difficultTColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLevel()));
-        instructorIdTColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getInstructorId()).asObject());
-
-        // Load the data
-        loadCourseData();
-
-        // Set the items for the TableView
-        tableView.setItems(courseList);
     }
+
 
     private void loadCourseData() {
-        courseList.clear();
-        List<Course> courses = courseData.getAllCourses();
-        courseList.addAll(courses);
+        try {
+            List<Course> courses = courseData.getAllCourses();
+            courseList.addAll(courses);
+            tableView.setItems(courseList);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
     }
+
 
     @FXML
     public void addOnAction(ActionEvent actionEvent) {

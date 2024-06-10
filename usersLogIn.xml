@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<users>
+  <user>
+    <username>hh</username>
+    <password>173af653133d964edfc16cafe0aba33c8f500a07f3ba3f81943916910c257705</password>
+    <role>admin</role>
+  </user>
+  <user>
+    <username>hh</username>
+    <password>173af653133d964edfc16cafe0aba33c8f500a07f3ba3f81943916910c257705</password>
+    <role>default</role>
+  </user>
+  <user>
+    <username>hh</username>
+    <password>173af653133d964edfc16cafe0aba33c8f500a07f3ba3f81943916910c257705</password>
+    <role>default</role>
+  </user>
+  <user>
+    <username>hh</username>
+    <password>173af653133d964edfc16cafe0aba33c8f500a07f3ba3f81943916910c257705</password>
+    <role>default</role>
+  </user>
+  <user>
+    <username>hh</username>
+    <password>173af653133d964edfc16cafe0aba33c8f500a07f3ba3f81943916910c257705</password>
+    <role>default</role>
+  </user>
+  <user>
+    <username>hh</username>
+    <password>a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3</password>
+    <role>default</role>
+  </user>
+</users>

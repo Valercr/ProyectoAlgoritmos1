@@ -1,6 +1,5 @@
 package ucr.proyecto1.domain.TXTData;
 
-
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
@@ -10,7 +9,9 @@ import ucr.proyecto1.domain.data.User;
 import ucr.proyecto1.domain.list.CircularLinkedList;
 import ucr.proyecto1.domain.list.ListException;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
 public class PasswordXML {
@@ -20,6 +21,7 @@ public class PasswordXML {
 
     public PasswordXML() {
         loadUsersFromFile(); // cargar los usuarios existentes del archivo XML en la lista circular.
+        copyUsersFromInformationUserXML(); // Copiar usuarios desde users.xml a usersLogIn.xml.
     }
 
     public void registerUser(String username, String password, String role) {
@@ -29,29 +31,6 @@ public class PasswordXML {
         appendUserToFile(user); // agregar el nuevo usuario al archivo XML.
     }
 
-    private void loadUsersFromFile() {
-        File inputFile = new File(FILE_NAME);
-        if (!inputFile.exists()) {
-            return; // si el archivo no existe, no hacer nada.
-        }
-
-        SAXBuilder saxBuilder = new SAXBuilder();
-        try {
-            Document document = saxBuilder.build(inputFile);
-            Element rootElement = document.getRootElement();
-            List<Element> userList = rootElement.getChildren("user");
-
-            for (Element userElement : userList) {
-                String username = userElement.getChildText("username");
-                String password = userElement.getChildText("password");
-                String role = userElement.getChildText("role");
-                users.append(new User(username, password, role));
-                System.out.println("Loaded user: " + username);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     private void appendUserToFile(User user) {
         try {
@@ -103,30 +82,55 @@ public class PasswordXML {
         return false;
     }
 
-    private void saveUsersToFile() {
+
+    private void loadUsersFromFile() {
+        File inputFile = new File(FILE_NAME);
+        if (!inputFile.exists()) {
+            return; // si el archivo no existe, no hacer nada.
+        }
+
+        SAXBuilder saxBuilder = new SAXBuilder();
         try {
-            Element rootElement = new Element("users");
-            Document document = new Document(rootElement);
+            Document document = saxBuilder.build(inputFile);
+            Element rootElement = document.getRootElement();
+            List<Element> userList = rootElement.getChildren("user");
 
-            CircularLinkedList.Node current = users.head;
-            if (current == null) return;
-
-            do {
-                User user = current.data;
-                Element userElement = new Element("user");
-                userElement.addContent(new Element("username").setText(user.getName()));
-                userElement.addContent(new Element("password").setText(user.getPassword()));
-                userElement.addContent(new Element("role").setText(user.getRole()));
-                rootElement.addContent(userElement);
-                current = current.next;
-            } while (current != users.head);
-
-            XMLOutputter xmlOutput = new XMLOutputter();
-            xmlOutput.setFormat(Format.getPrettyFormat());
-            xmlOutput.output(document, new FileWriter(FILE_NAME));
-
-        } catch (IOException e) {
+            for (Element userElement : userList) {
+                String username = userElement.getChildText("username");
+                String password = userElement.getChildText("password");
+                String role = userElement.getChildText("role");
+                User user = new User(username, password, role);
+                users.append(user);
+                System.out.println("Loaded user: " + username);
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    private void copyUsersFromInformationUserXML() {
+        File inputFile = new File(InformationUserXML.FILE_NAME);
+        if (!inputFile.exists()) {
+            return; // Si el archivo no existe, no hacer nada.
+        }
+
+        SAXBuilder saxBuilder = new SAXBuilder();
+        try {
+            Document document = saxBuilder.build(inputFile);
+            Element rootElement = document.getRootElement();
+            List<Element> userList = rootElement.getChildren("user");
+
+            for (Element userElement : userList) {
+                String username = userElement.getChildText("name");
+                String password = userElement.getChildText("password");
+                String role = "default"; // Aquí puedes asignar un rol por defecto o cambiarlo según tus necesidades.
+                User user = new User(username, password, role); // Usar constructor con email
+                users.append(user);
+                appendUserToFile(user); // Registrar el usuario en el archivo usersLogIn.xml.
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

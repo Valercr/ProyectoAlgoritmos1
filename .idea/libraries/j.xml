@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="javax-inject">
+  <library name="j">
     <CLASSES>
       <root url="jar://$USER_HOME$/Downloads/lib/lib/javax-inject.jar!/" />
       <root url="jar://$USER_HOME$/Downloads/lib/lib/javax.activation-1.1.0.v201105071233.jar!/" />

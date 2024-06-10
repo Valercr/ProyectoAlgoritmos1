@@ -9,6 +9,15 @@ public class User {
     private String password;
 
 
+
+    public void setRole(String level) {
+        if (!role.equalsIgnoreCase("User") && !role.equalsIgnoreCase("Admin") && !role.equalsIgnoreCase("Instructor")) {
+            throw new IllegalArgumentException("Invalid level. Level must be one of the following: low, medium, high.");
+        }
+        this.role = level;
+    }
+
+
     public User(int id, String name, String email, String password) {
         this.id = id;
         this.name = name;

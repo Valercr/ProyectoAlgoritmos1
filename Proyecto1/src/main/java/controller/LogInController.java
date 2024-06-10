@@ -6,6 +6,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import ucr.proyecto1.domain.TXTData.InformationUserXML;
+import ucr.proyecto1.domain.TXTData.PasswordXML;
 import util.Utility;
 
 public class LogInController
@@ -21,10 +22,12 @@ public class LogInController
     @javafx.fxml.FXML
     private PasswordField passwordField;
 
+    private PasswordXML passwordXML;
+
     @javafx.fxml.FXML
     public void initialize() {
-//        archivoTXTPassword = new ArchivoTXTPassword();
-        informationUserXML = new InformationUserXML();
+
+        passwordXML=new PasswordXML();
     }
 
     @javafx.fxml.FXML
@@ -40,7 +43,7 @@ public class LogInController
             util.UtilityFX.alert("Error", "Complete todos los espacios");
         else{
 //            if (archivoTXTPassword.authenticateUser(email, password))
-            if (informationUserXML.authenticateUser(email, password)){
+            if (passwordXML.authenticateUser(email, password)){
                 if (Utility.roleUsuarioActivo.equalsIgnoreCase("administrative"))
                     util.UtilityFX.loadPage("menuManager.fxml", bp);
                 else if (Utility.roleUsuarioActivo.equalsIgnoreCase("instructor"))

@@ -4,7 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import ucr.proyecto1.domain.TXTData.InformationUserXML;
-import ucr.proyecto1.domain.XMLData.UserXMLData;
+import ucr.proyecto1.domain.XMLData.Email;
 import ucr.proyecto1.domain.data.User;
 
 import static util.UtilityFX.loadPage;
@@ -32,11 +32,11 @@ public class SignUpController
     @javafx.fxml.FXML
     private TextField txtFieldPassword;
     User user;
-    private UserXMLData userXMLData;
+    private Email userXMLData;
 
     public SignUpController() {
         informationUserXML = new InformationUserXML();
-        userXMLData = new UserXMLData();
+        userXMLData = new Email();
     }
 
     @javafx.fxml.FXML

@@ -9,12 +9,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
-import ucr.proyecto1.domain.TXTData.UserXMLData;
-import ucr.proyecto1.domain.data.Course;
+import ucr.proyecto1.domain.TXTData.InformationUserXML;
+import ucr.proyecto1.domain.TXTData.PasswordXML;
+import ucr.proyecto1.domain.XMLData.Email;
 import ucr.proyecto1.domain.data.User;
-import ucr.proyecto1.domain.tree.TreeException;
 
-import java.io.IOException;
 import java.util.List;
 
 public class UserMaintenanceController {
@@ -31,12 +30,15 @@ public class UserMaintenanceController {
     @FXML
     private BorderPane bp;
 
+    private InformationUserXML informationUserXML;
     private ObservableList<User> userList = FXCollections.observableArrayList();
-    private UserXMLData userXMLData;
+    private Email email;
+    private PasswordXML passwordXML;
 
     @FXML
     public void initialize() {
-        userXMLData = new UserXMLData();
+        informationUserXML = new InformationUserXML(); // Inicializa InformationUserXML
+        email = new Email();
 
         idTColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameTColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -48,7 +50,7 @@ public class UserMaintenanceController {
 
     private void loadUserData() {
         try {
-            List<User> users = userXMLData.getAllUsers();
+            List<User> users = informationUserXML.getUserList(); // Utiliza getUserList() para obtener los usuarios
             userList.addAll(users);
             tableView.setItems(userList);
         } catch (RuntimeException e) {
@@ -77,15 +79,13 @@ public class UserMaintenanceController {
         User selectedIndex = tableView.getSelectionModel().getSelectedItem();
 
         if (selectedIndex != null) {
-           userXMLData.deleteUser(selectedIndex.getId());
+            informationUserXML.deleteUser(selectedIndex.getId());
             userList.remove(selectedIndex);
             tableView.getItems().remove(selectedIndex);
         } else {
             showAlert("Error", "Por favor, seleccione un usuario para eliminar.");
         }
     }
-
-
 
     @FXML
     public void addOnAction(ActionEvent actionEvent) {

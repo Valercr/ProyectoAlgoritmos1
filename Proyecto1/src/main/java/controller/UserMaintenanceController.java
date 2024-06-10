@@ -11,7 +11,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import ucr.proyecto1.domain.TXTData.InformationUserXML;
 import ucr.proyecto1.domain.TXTData.PasswordXML;
-//import ucr.proyecto1.domain.XMLData.Email;
+import ucr.proyecto1.domain.XMLData.Email;
 import ucr.proyecto1.domain.data.User;
 
 import java.util.List;
@@ -32,13 +32,13 @@ public class UserMaintenanceController {
 
     private InformationUserXML informationUserXML;
     private ObservableList<User> userList = FXCollections.observableArrayList();
-//    private Email email;
+    private Email email;
     private PasswordXML passwordXML;
 
     @FXML
     public void initialize() {
         informationUserXML = new InformationUserXML(); // Inicializa InformationUserXML
-//        email = new Email();
+        email = new Email();
 
         idTColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameTColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -68,7 +68,7 @@ public class UserMaintenanceController {
         User selectedUser = tableView.getSelectionModel().getSelectedItem();
 
         if (selectedUser == null) {
-            util.UtilityFX.alert("Error", "Por favor, seleccione un usuario para modificar.", Alert.AlertType.ERROR);
+            showAlert("Error", "Por favor, seleccione un usuario para modificar.");
         } else {
             util.UtilityFX.loadPage("modifyUser.fxml", bp);
         }
@@ -83,12 +83,20 @@ public class UserMaintenanceController {
             userList.remove(selectedIndex);
             tableView.getItems().remove(selectedIndex);
         } else {
-            util.UtilityFX.alert("Error", "Por favor, seleccione un usuario para eliminar.", Alert.AlertType.ERROR);
+            showAlert("Error", "Por favor, seleccione un usuario para eliminar.");
         }
     }
 
     @FXML
     public void addOnAction(ActionEvent actionEvent) {
         util.UtilityFX.loadPage("addUser.fxml", bp);
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

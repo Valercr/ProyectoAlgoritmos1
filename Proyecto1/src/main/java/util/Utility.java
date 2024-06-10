@@ -71,4 +71,9 @@ public class Utility {
         if(a instanceof BTree && b instanceof BTree) return "BTree";
         return "Unknown";
     }
+
+    public static String roleUsuarioActivo = "";
+    public static String nameUsuarioActivo = "";
+    public static String emailUsuarioActivo = "";
+    public static String passwordUsuarioActivo = "";
 }

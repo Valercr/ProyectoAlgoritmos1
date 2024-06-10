@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="bp" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MenuUserController">
+   <center>
+      <AnchorPane prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <Label layoutX="148.0" layoutY="164.0" text="Welcome Student!">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="59.0" fitWidth="72.0" layoutX="381.0" layoutY="152.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../images/books.jpg" />
+               </image>
+            </ImageView>
+         </children></AnchorPane>
+   </center>
+   <top>
+      <MenuBar style="-fx-background-color: #4FC0D0;" BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="Courses">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#registerCoursesOnAction" text="Register" />
+                  <MenuItem mnemonicParsing="false" onAction="#searchCoursesOnAction" text="Search" />
+                  <MenuItem mnemonicParsing="false" onAction="#cancelCoursesOnAction" text="Cancel" />
+                  <MenuItem mnemonicParsing="false" onAction="#progressCoursesOnAction" text="Progress" />
+                  <MenuItem mnemonicParsing="false" onAction="#gradesCoursesOnAction" text="Grades" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Lesson">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#accessLessonOnAction" text="Access" />
+                  <MenuItem mnemonicParsing="false" onAction="#progressLessonOnAction" text="Progress" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Study Material">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#studyMatViewOnAction" text="View" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" onAction="#reportsOnAction" text="Evaluations">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#completeEvaluationsOnAction" text="Complete" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Reports">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#personalReportOnAction" text="Personal" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Profile">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#editProfileOnAction" text="Edit" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" onAction="#exitOnAction" text="Exit" />
+        </menus>
+      </MenuBar>
+   </top>
+</BorderPane>

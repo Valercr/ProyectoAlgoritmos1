@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="bp" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MenuManagerController">
+   <center>
+      <AnchorPane prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <Label layoutX="115.0" layoutY="168.0" text="Welcome System Administrator!">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="51.0" fitWidth="48.0" layoutX="444.0" layoutY="159.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../images/administrator.jpg" />
+               </image>
+            </ImageView>
+         </children></AnchorPane>
+   </center>
+   <top>
+      <MenuBar style="-fx-background-color: #CEDDEF;" BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="Courses">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#maintenanceCoursesOnAction" text="Maintenance" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Lessons">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#maintenanceLessonsOnAction" text="Maintenance" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Evaluations">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#applyEvaluationsOnAction" text="Apply" />
+                  <MenuItem mnemonicParsing="false" onAction="#completeEvaluationsOnAction" text="Complete" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Process">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#monitorProgressOnAction" text="Monitoring" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Users">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#userMaintenanceOnAction" text="Maintenance" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Reports">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#reportsMaintenanceOnAction" text="Maintenance" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" onAction="#reportsOnAction" text="Profile">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#editProfileOnAction" text="Edit" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" onAction="#exitOnAction" text="Exit" />
+        </menus>
+      </MenuBar>
+   </top>
+</BorderPane>

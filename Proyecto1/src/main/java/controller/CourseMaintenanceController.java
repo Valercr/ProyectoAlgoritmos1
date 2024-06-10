@@ -6,10 +6,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 import org.jdom2.JDOMException;
+import org.jdom2.Parent;
 import ucr.proyecto1.domain.XMLData.CourseXMLData;
 import ucr.proyecto1.domain.data.Course;
 import ucr.proyecto1.domain.tree.TreeException;
@@ -41,6 +44,8 @@ public class CourseMaintenanceController {
 
     private CourseXMLData courseData;
     private ObservableList<Course> courseList = FXCollections.observableArrayList();
+    @FXML
+    private Button btnInformation;
 
     @FXML
     public void initialize() {
@@ -125,4 +130,21 @@ public class CourseMaintenanceController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    @FXML
+    public void showInfoOnAction(ActionEvent actionEvent) {
+        Course selectedCourse = tableView.getSelectionModel().getSelectedItem();
+        if (selectedCourse != null) {
+            try {
+                CourseInfoWindow courseInfoWindow = new CourseInfoWindow(selectedCourse);
+                courseInfoWindow.start(new Stage());
+            } catch (Exception e) {
+                e.printStackTrace();
+                showAlert("Error", "Error loading course information window: " + e.getMessage());
+            }
+        } else {
+            showAlert("No Course Selected", "Please select a course to view information.");
+        }
+    }
+
 }

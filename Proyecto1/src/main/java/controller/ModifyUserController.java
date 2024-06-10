@@ -68,7 +68,7 @@ public class ModifyUserController {
         String idUser = txtField_idUser.getText();
 
         if (idUser.isEmpty()) {
-            showAlert("Error", "Debe ingresar un ID de usuario válido.");
+            util.UtilityFX.alert("Error", "Debe ingresar un ID de usuario válido.");
         } else {
             try {
                 int id = Integer.parseInt(idUser);
@@ -78,23 +78,15 @@ public class ModifyUserController {
 
                 // Lógica para actualizar la información del usuario donde sea necesario
 
-                showAlert("Éxito", "Usuario modificado exitosamente.");
+                util.UtilityFX.alert("Éxito", "Usuario modificado exitosamente.");
                 util.UtilityFX.loadPage("userMaintenance.fxml", bp);
             } catch (NumberFormatException e) {
-                showAlert("Error", "Error al modificar el usuario: " + e.getMessage());
+                util.UtilityFX.alert("Error", "Error al modificar el usuario: " + e.getMessage());
             }
         }
     }
 
     @FXML
     public void txtFieldConfirmPassword(ActionEvent actionEvent) {
-    }
-
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 }

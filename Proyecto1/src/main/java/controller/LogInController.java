@@ -14,7 +14,6 @@ public class LogInController
     private TextField txtField_emailAddress;
     @javafx.fxml.FXML
     private BorderPane bp;
-    Alert alert;
 //    ArchivoTXTPassword archivoTXTPassword;
     InformationUserXML informationUserXML;
 //    ArchiveInformationUser archiveInformationUser;
@@ -38,7 +37,7 @@ public class LogInController
         String email = txtField_emailAddress.getText();
         String password = passwordField.getText();
         if (email.isEmpty() || password.isEmpty())
-            alert = util.UtilityFX.alert("Error", "Complete todos los espacios");
+            util.UtilityFX.alert("Error", "Complete todos los espacios");
         else{
 //            if (archivoTXTPassword.authenticateUser(email, password))
             if (informationUserXML.authenticateUser(email, password)){
@@ -48,7 +47,7 @@ public class LogInController
                     util.UtilityFX.loadPage("menuInstructor.fxml", bp);
                 else util.UtilityFX.loadPage("menuUser.fxml", bp);
             }
-            else alert = util.UtilityFX.alert("Error", "Usuario o contraseña incorrectos");
+            else util.UtilityFX.alert("Error", "Usuario o contraseña incorrectos");
         }
 
     }

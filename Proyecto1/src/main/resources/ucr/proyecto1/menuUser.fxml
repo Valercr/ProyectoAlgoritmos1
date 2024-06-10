@@ -64,7 +64,6 @@
                   <MenuItem mnemonicParsing="false" onAction="#editProfileOnAction" text="Edit" />
                </items>
             </Menu>
-            <Menu mnemonicParsing="false" onAction="#exitOnAction" text="Exit" />
         </menus>
       </MenuBar>
    </top>

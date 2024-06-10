@@ -33,16 +33,21 @@ public class UtilityFX {
         }
     }
 
-    public static Alert alert(String title, String headerText){
-        Alert myalert = new Alert(Alert.AlertType.INFORMATION);
-        myalert.setTitle(title);
-        myalert.setHeaderText(headerText);
-        myalert.getDialogPane().setPrefSize(400, 300);
-        myalert.showAndWait();
+    public static Alert alert (String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(message);
+        alert.showAndWait();
+        return alert;
+    }
 
-        DialogPane dialogPane = myalert.getDialogPane();
-        dialogPane.getStyleClass().add("myDialog");
-        return myalert;
+    public static Alert alert (String header, String message, Alert.AlertType alertType) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle("Information");
+        alert.setHeaderText(header);
+        alert.setContentText(message);
+        alert.showAndWait();
+        return alert;
     }
 
     public static TextInputDialog dialog(String title, String headerText){

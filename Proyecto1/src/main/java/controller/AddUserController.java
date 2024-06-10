@@ -17,8 +17,6 @@ public class AddUserController {
     @FXML
     private TextField txtField_email;
     @FXML
-    private CheckBox showPassword;
-    @FXML
     private TextField txtField_idUser;
     @FXML
     private TextField txtFieldPassword;
@@ -36,17 +34,6 @@ public class AddUserController {
     }
 
     @FXML
-    public void changeVisibility(ActionEvent actionEvent) {
-        if (showPassword.isSelected()) {
-            txtFieldPassword.setPromptText(txtFieldPassword.getText());
-            txtFieldPassword.setText("");
-        } else {
-            txtFieldPassword.setText(txtFieldPassword.getPromptText());
-            txtFieldPassword.setPromptText("");
-        }
-    }
-
-    @FXML
     public void createOnAction(ActionEvent actionEvent) {
         try {
             int id = Integer.parseInt(txtField_idUser.getText());
@@ -57,36 +44,23 @@ public class AddUserController {
             String role = cBoxRole.getValue();
 
             if (password.isEmpty() || confirmPassword.isEmpty() || name.isEmpty() || email.isEmpty() || role == null) {
-                showAlert(Alert.AlertType.ERROR, "Error", "Todos los campos deben ser llenados.");
+                util.UtilityFX.alert( "Error", "Todos los campos deben ser llenados.");
                 return;
             }
 
             if (!password.equals(confirmPassword)) {
-                showAlert(Alert.AlertType.ERROR, "Error", "Las contraseñas no coinciden.");
+                util.UtilityFX.alert("Error", "Las contraseñas no coinciden.", Alert.AlertType.ERROR);
                 return;
             }
 
             informationUserXML.registerUser(id, name, email, password);
-            showAlert(Alert.AlertType.INFORMATION, "Éxito", "Usuario creado exitosamente.");
+            util.UtilityFX.alert("Éxito", "Usuario creado exitosamente.", Alert.AlertType.INFORMATION);
             clearFields();
         } catch (NumberFormatException e) {
-            showAlert(Alert.AlertType.ERROR, "Error", "El formato del ID del usuario es inválido.");
+            util.UtilityFX.alert("Error", "El formato del ID del usuario es inválido.", Alert.AlertType.ERROR);
         } catch (Exception e) {
-            showAlert(Alert.AlertType.ERROR, "Error", "Ocurrió un error: " + e.getMessage());
+            util.UtilityFX.alert("Error", "Ocurrió un error: " + e.getMessage(), Alert.AlertType.ERROR);
         }
-    }
-
-    @FXML
-    public void backOnAction(ActionEvent actionEvent) {
-        util.UtilityFX.loadPage("userMaintenance.fxml", bp);
-    }
-
-    private void showAlert(Alert.AlertType alertType, String title, String message) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 
     private void clearFields() {

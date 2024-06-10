@@ -5,11 +5,15 @@ import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import ucr.proyecto1.domain.data.User;
 import ucr.proyecto1.domain.list.CircularDoublyLinkedList;
 import ucr.proyecto1.domain.list.ListException;
 
 import javax.mail.MessagingException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -225,4 +229,6 @@ public class InformationUserXML {
         }
         return userList;
     }
+
+
 }

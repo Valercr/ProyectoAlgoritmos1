@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
@@ -24,10 +23,8 @@
                   <TextField fx:id="txtField_userName" layoutX="119.0" layoutY="129.0" promptText="👤  Username" />
                   <TextField fx:id="txtField_email" layoutX="120.0" layoutY="203.0" promptText="📧   Email" />
                   <Button layoutX="119.0" layoutY="345.0" mnemonicParsing="false" onAction="#createOnAction" prefHeight="25.0" prefWidth="149.0" text="Create" />
-                  <Button layoutX="166.0" layoutY="456.0" mnemonicParsing="false" onAction="#backOnAction" prefHeight="25.0" prefWidth="54.0" text="Back" />
                   <Label layoutX="136.0" layoutY="92.0" text="Create a new account" />
                   <TextField fx:id="txtField_idUser" layoutX="120.0" layoutY="165.0" promptText="🆔   Cédula" />
-                  <CheckBox fx:id="showPassword" layoutX="280.0" layoutY="283.0" mnemonicParsing="false" onAction="#changeVisibility" text="Show" />
                   <TextField fx:id="txtFieldPassword" layoutX="120.0" layoutY="279.0" promptText="Password" />
                   <TextField fx:id="txtFieldConfirmPassword" layoutX="120.0" layoutY="311.0" promptText="Confirm password" />
                   <ComboBox fx:id="cBoxRole" layoutX="121.0" layoutY="242.0" prefWidth="150.0" promptText="Select a role" />

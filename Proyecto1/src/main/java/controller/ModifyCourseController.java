@@ -44,7 +44,7 @@ public class ModifyCourseController {
 
     @FXML
     public void cancelOnAction(ActionEvent actionEvent) {
-        util.UtilityFX.loadPage("courseMaintenance.fxml", bp);
+
     }
 
     @FXML
@@ -60,15 +60,7 @@ public class ModifyCourseController {
             util.UtilityFX.loadPage("courseMaintenance.fxml", bp);
         } catch (IOException | JDOMException | TreeException e) {
             e.printStackTrace();
-            showAlert("Error", "Error al actualizar el curso: " + e.getMessage());
+            util.UtilityFX.alert("Error", "Error al actualizar el curso: " + e.getMessage(), Alert.AlertType.ERROR);
         }
-    }
-
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 }

@@ -29,11 +29,6 @@ public class SearchUserController {
     }
 
     @FXML
-    public void backOnAction(ActionEvent actionEvent) {
-        util.UtilityFX.loadPage("userMaintenance.fxml", bp);
-    }
-
-    @FXML
     public void searchOnAction(ActionEvent actionEvent) {
         try {
             int id = Integer.parseInt(txtField_idUser.getText());
@@ -42,14 +37,14 @@ public class SearchUserController {
                 txtField_userName.setText(user.getName());
                 txtField_email.setText(user.getEmail());
 
-                showAlert(Alert.AlertType.INFORMATION, "User Found",user.getId()+"\n"+ user.getName()+"\n"+user.getEmail());
+                util.UtilityFX.alert("User Found",user.getId()+"\n"+ user.getName()+"\n"+user.getEmail());
 
             } else {
-                showAlert(Alert.AlertType.INFORMATION, "User Not Found", "No user found with ID " + id);
+                util.UtilityFX.alert("User Not Found", "No user found with ID " + id);
                 clearFields();
             }
         } catch (NumberFormatException e) {
-            showAlert(Alert.AlertType.ERROR, "Input Error", "Invalid user ID format.");
+            util.UtilityFX.alert("Input Error", "Invalid user ID format.", Alert.AlertType.ERROR);
         }
     }
 
@@ -58,13 +53,5 @@ public class SearchUserController {
         txtField_userName.clear();
         txtField_email.clear();
         txtField_idUser.clear();
-    }
-
-    private void showAlert(Alert.AlertType alertType, String title, String message) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 }

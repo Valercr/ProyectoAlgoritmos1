@@ -40,7 +40,7 @@ public class AddCourseController {
 
     @FXML
     public void cancelOnAction(ActionEvent actionEvent) {
-        util.UtilityFX.loadPage("courseMaintenance.fxml", bp);
+        clearFields();
     }
 
     @FXML
@@ -56,7 +56,7 @@ public class AddCourseController {
 
             // Valida que todos los campos estén llenos.
             if (name.isEmpty() || description.isEmpty() || level == null) {
-                showAlert("Error", "Todos los campos deben ser llenados", Alert.AlertType.ERROR);
+                util.UtilityFX.alert("Error", "Todos los campos deben ser llenados", Alert.AlertType.ERROR);
                 return;
             }
 
@@ -68,7 +68,7 @@ public class AddCourseController {
 
             // Verifica si el curso ya existe.
             if (courseXMLData.courseTree.contains(course)) {
-                showAlert("Error", "El curso con este ID ya existe.", Alert.AlertType.ERROR);
+                util.UtilityFX.alert("Error", "El curso con este ID ya existe.", Alert.AlertType.ERROR);
                 return;
             }
 
@@ -76,19 +76,19 @@ public class AddCourseController {
             courseXMLData.addCourse(course);
 
             // Muestra un mensaje de éxito.
-            showAlert("Éxito", "Curso añadido exitosamente", Alert.AlertType.INFORMATION);
+            util.UtilityFX.alert("Éxito", "Curso añadido exitosamente", Alert.AlertType.INFORMATION);
 
             // Limpia los campos después de añadir el curso.
             clearFields();
 
         } catch (NumberFormatException e) {
-            showAlert("Error", "ID e Instructor ID deben ser números enteros.", Alert.AlertType.ERROR);
+            util.UtilityFX.alert("Error", "ID e Instructor ID deben ser números enteros.", Alert.AlertType.ERROR);
         } catch (IllegalArgumentException e) {
-            showAlert("Error", e.getMessage(), Alert.AlertType.ERROR);
+            util.UtilityFX.alert("Error", e.getMessage(), Alert.AlertType.ERROR);
         } catch (IOException | JDOMException e) {
-            showAlert("Error", "Error al interactuar con el archivo XML: " + e.getMessage(), Alert.AlertType.ERROR);
+            util.UtilityFX.alert("Error", "Error al interactuar con el archivo XML: " + e.getMessage(), Alert.AlertType.ERROR);
         } catch (TreeException e) {
-            showAlert("Error", "Error en la estructura de datos del árbol: " + e.getMessage(), Alert.AlertType.ERROR);
+            util.UtilityFX.alert("Error", "Error en la estructura de datos del árbol: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
@@ -101,11 +101,4 @@ public class AddCourseController {
         txtField_instructorId.clear();
     }
 
-    private void showAlert(String title, String message, Alert.AlertType alertType) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
 }

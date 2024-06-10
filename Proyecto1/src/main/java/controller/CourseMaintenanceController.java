@@ -89,7 +89,7 @@ public class CourseMaintenanceController {
             ModifyCourseController.setCourseToModify(selectedCourse);
             util.UtilityFX.loadPage("modifyCourse.fxml", bp);
         } else {
-            showAlert("No Course Selected", "Please select a course to modify.");
+            util.UtilityFX.alert("No Course Selected", "Please select a course to modify.");
         }
     }
 
@@ -102,10 +102,10 @@ public class CourseMaintenanceController {
                 courseList.remove(selectedCourse);
             } catch (IOException | TreeException e) {
                 e.printStackTrace();
-                showAlert("Error", "Error al eliminar el curso: " + e.getMessage());
+                util.UtilityFX.alert("Error", "Error al eliminar el curso: " + e.getMessage());
             }
         } else {
-            showAlert("No Course Selected", "Please select a course to delete.");
+            util.UtilityFX.alert("No Course Selected", "Please select a course to delete.");
         }
     }
 
@@ -123,14 +123,6 @@ public class CourseMaintenanceController {
         tableView.setItems(filteredList);
     }
 
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
     @FXML
     public void showInfoOnAction(ActionEvent actionEvent) {
         Course selectedCourse = tableView.getSelectionModel().getSelectedItem();
@@ -140,10 +132,10 @@ public class CourseMaintenanceController {
                 courseInfoWindow.start(new Stage());
             } catch (Exception e) {
                 e.printStackTrace();
-                showAlert("Error", "Error loading course information window: " + e.getMessage());
+                util.UtilityFX.alert("Error", "Error loading course information window: " + e.getMessage());
             }
         } else {
-            showAlert("No Course Selected", "Please select a course to view information.");
+            util.UtilityFX.alert("No Course Selected", "Please select a course to view information.");
         }
     }
 

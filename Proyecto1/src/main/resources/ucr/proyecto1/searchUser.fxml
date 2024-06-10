@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="bp" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SearchUserController">
+   <center>
+      <AnchorPane prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <Pane prefHeight="400.0" prefWidth="600.0">
+               <children>
+                  <Label layoutX="25.0" layoutY="14.0" prefHeight="46.0" prefWidth="142.0" text="Search User">
+                     <font>
+                        <Font name="Arial Bold" size="23.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="25.0" layoutY="91.0" text="Enter  the ID">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField layoutX="130.0" layoutY="89.0" />
+                  <Button layoutX="287.0" layoutY="89.0" mnemonicParsing="false" onAction="#searchOnAction" text="🔍" />
+                  <TextField fx:id="txtField_userName" editable="false" layoutX="129.0" layoutY="174.0" promptText="👤  Username" visible="false" />
+                  <TextField fx:id="txtField_email" editable="false" layoutX="130.0" layoutY="248.0" promptText="📧   Email" visible="false" />
+                  <TextField fx:id="txtField_idUser" editable="false" layoutX="130.0" layoutY="210.0" promptText="🆔   Cédula" visible="false" />
+                  <Label fx:id="laberFond" layoutX="190.0" layoutY="134.0" />
+                  <Button layoutX="178.0" layoutY="292.0" mnemonicParsing="false" onAction="#backOnAction" text="Back" />
+               </children>
+            </Pane>
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>

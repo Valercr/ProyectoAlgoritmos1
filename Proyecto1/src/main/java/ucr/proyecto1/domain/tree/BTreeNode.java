@@ -1,35 +1,34 @@
 package ucr.proyecto1.domain.tree;
-
-public class BTreeNode {
-    public Object data;
-    public BTreeNode left, right; // hijo izq, hijo der
-    public String path; // valores: root/left/right
-    public int height; // altura del nodo
+public class BTreeNode<T> {
+    public T data;
+    public BTreeNode<T> left, right;
+    public String path;
+    public int height;
 
     // Constructor
-    public BTreeNode(Object data) {
+    public BTreeNode(T data) {
         this.data = data;
         this.left = this.right = null;
         this.height = 1; // altura inicial al crear el nodo
     }
 
     // Constructor sobrecargado
-    public BTreeNode(Object data, String path) {
+    public BTreeNode(T data, String path) {
         this.data = data;
         this.path = path;
         this.left = this.right = null;
         this.height = 1; // altura inicial al crear el nodo
     }
 
-    public Object getData() {
+    public T getData() {
         return data;
     }
 
-    public BTreeNode getLeft() {
+    public BTreeNode<T> getLeft() {
         return left;
     }
 
-    public BTreeNode getRight() {
+    public BTreeNode<T> getRight() {
         return right;
     }
 }

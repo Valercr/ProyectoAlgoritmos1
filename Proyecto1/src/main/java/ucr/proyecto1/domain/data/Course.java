@@ -1,22 +1,21 @@
 package ucr.proyecto1.domain.data;
 
 import java.util.Objects;
-
 public class Course implements Comparable<Course> {
     private int id;
     private String name;
     private String description;
-    private String courseLength;
+    private String length;
     private String level;
     private int instructorId;
 
-    public Course(int id, String name, String description, String courseLength, String level, int instructorId) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.courseLength = courseLength;
-        setLevel(level); // Validación de nivel en el constructor
-        this.instructorId = instructorId;
+    public Course(int id, String name, String description, String length, String level, int instructorId) {
+        setId(id);
+        setName(name);
+        setDescription(description);
+        setLength(length);
+        setLevel(level);
+        setInstructorId(instructorId);
     }
 
     public int getId() {
@@ -35,6 +34,9 @@ public class Course implements Comparable<Course> {
     }
 
     public void setName(String name) {
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("Course name cannot be null or empty.");
+        }
         this.name = name;
     }
 
@@ -43,15 +45,21 @@ public class Course implements Comparable<Course> {
     }
 
     public void setDescription(String description) {
+        if (description == null || description.isEmpty()) {
+            throw new IllegalArgumentException("Course description cannot be null or empty.");
+        }
         this.description = description;
     }
 
-    public String getCourseLength() {
-        return courseLength;
+    public String getLength() {
+        return length;
     }
 
-    public void setCourseLength(String courseLength) {
-        this.courseLength = courseLength;
+    public void setLength(String length) {
+        if (length == null || length.isEmpty()) {
+            throw new IllegalArgumentException("Course length cannot be null or empty.");
+        }
+        this.length = length;
     }
 
     public String getLevel() {
@@ -59,9 +67,8 @@ public class Course implements Comparable<Course> {
     }
 
     public void setLevel(String level) {
-        // Validar que el nivel sea uno de los valores predefinidos
-        if (!level.equalsIgnoreCase("bajo") && !level.equalsIgnoreCase("medio") && !level.equalsIgnoreCase("dificil")) {
-            throw new IllegalArgumentException("Invalid level. Level must be one of the following: bajo, medio, dificil.");
+        if (!level.equalsIgnoreCase("low") && !level.equalsIgnoreCase("medium") && !level.equalsIgnoreCase("high")) {
+            throw new IllegalArgumentException("Invalid level. Level must be one of the following: low, medium, high.");
         }
         this.level = level;
     }
@@ -71,16 +78,17 @@ public class Course implements Comparable<Course> {
     }
 
     public void setInstructorId(int instructorId) {
+        if (instructorId <= 0) {
+            throw new IllegalArgumentException("Instructor ID must be a positive number.");
+        }
         this.instructorId = instructorId;
     }
 
-    // Método compareTo para ordenar por nombre
     @Override
     public int compareTo(Course otherCourse) {
-        return this.name.compareTo(otherCourse.name);
+        return Integer.compare(this.id, otherCourse.id);
     }
 
-    // Método equals para comparar por id
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -89,23 +97,20 @@ public class Course implements Comparable<Course> {
         return id == course.id;
     }
 
-    // Método hashCode para garantizar consistencia en la comparación
     @Override
     public int hashCode() {
         return Objects.hash(id);
     }
 
-    // Método toString para representar el curso como una cadena de texto
     @Override
     public String toString() {
         return "Course{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", courseLength='" + courseLength + '\'' +
+                ", length='" + length + '\'' +
                 ", level='" + level + '\'' +
                 ", instructorId=" + instructorId +
                 '}';
     }
 }
-

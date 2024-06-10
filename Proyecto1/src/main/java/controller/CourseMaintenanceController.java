@@ -1,61 +1,128 @@
 package controller;
 
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import org.jdom2.JDOMException;
+import ucr.proyecto1.domain.XMLData.CourseXMLData;
+import ucr.proyecto1.domain.data.Course;
+import ucr.proyecto1.domain.tree.TreeException;
 
-public class CourseMaintenanceController
-{
-    @javafx.fxml.FXML
+import java.io.IOException;
+import java.util.List;
+
+public class CourseMaintenanceController {
+    @FXML
     private TextField searchTxtField;
-    @javafx.fxml.FXML
-    private TableView tableView;
-    @javafx.fxml.FXML
+    @FXML
+    private TableView<Course> tableView;
+    @FXML
     private BorderPane bp;
-    @javafx.fxml.FXML
+    @FXML
     private Button btnSearchCourse;
-    @javafx.fxml.FXML
-    private TableColumn descriptionTColumn;
-    @javafx.fxml.FXML
-    private TableColumn idTColumn;
-    @javafx.fxml.FXML
-    private TableColumn instructorIdTColumn;
-    @javafx.fxml.FXML
-    private TableColumn difficultTColumn;
-    @javafx.fxml.FXML
-    private TableColumn nameTColumn;
-    @javafx.fxml.FXML
-    private TableColumn durationTColumn;
+    @FXML
+    private TableColumn<Course, Integer> idTColumn;
+    @FXML
+    private TableColumn<Course, String> nameTColumn;
+    @FXML
+    private TableColumn<Course, String> descriptionTColumn;
+    @FXML
+    private TableColumn<Course, String> durationTColumn;
+    @FXML
+    private TableColumn<Course, String> difficultTColumn;
+    @FXML
+    private TableColumn<Course, Integer> instructorIdTColumn;
 
-    @javafx.fxml.FXML
+    private CourseXMLData courseData;
+    private ObservableList<Course> courseList = FXCollections.observableArrayList();
+
+    @FXML
     public void initialize() {
+        // Initialize the CourseXMLData
+        try {
+            courseData = new CourseXMLData("courses.xml");
+        } catch (IOException | JDOMException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        // Initialize columns
+        idTColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
+        nameTColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
+        descriptionTColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDescription()));
+        durationTColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLength()));
+        difficultTColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLevel()));
+        instructorIdTColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getInstructorId()).asObject());
+
+        // Load the data
+        loadCourseData();
+
+        // Set the items for the TableView
+        tableView.setItems(courseList);
     }
 
-    @javafx.fxml.FXML
-    public void searchOnAction(ActionEvent actionEvent) {
-        searchTxtField.setVisible(true);
-        btnSearchCourse.setVisible(true);
-
+    private void loadCourseData() {
+        courseList.clear();
+        List<Course> courses = courseData.getAllCourses();
+        courseList.addAll(courses);
     }
 
-    @javafx.fxml.FXML
+    @FXML
     public void addOnAction(ActionEvent actionEvent) {
-        util.UtilityFX.loadPage("addCourse", bp);
+        util.UtilityFX.loadPage("addCourse.fxml", bp);
     }
 
-    @javafx.fxml.FXML
+    @FXML
     public void modifyOnAction(ActionEvent actionEvent) {
-        util.UtilityFX.loadPage("modifyCourse", bp);
+        Course selectedCourse = tableView.getSelectionModel().getSelectedItem();
+        if (selectedCourse != null) {
+            ModifyCourseController.setCourseToModify(selectedCourse);
+            util.UtilityFX.loadPage("modifyCourse.fxml", bp);
+        } else {
+            showAlert("No Course Selected", "Please select a course to modify.");
+        }
     }
 
-    @javafx.fxml.FXML
+    @FXML
     public void deleteOnAction(ActionEvent actionEvent) {
+        Course selectedCourse = tableView.getSelectionModel().getSelectedItem();
+        if (selectedCourse != null) {
+            try {
+                courseData.removeCourse(selectedCourse.getId());
+                courseList.remove(selectedCourse);
+            } catch (IOException | TreeException e) {
+                e.printStackTrace();
+                showAlert("Error", "Error al eliminar el curso: " + e.getMessage());
+            }
+        } else {
+            showAlert("No Course Selected", "Please select a course to delete.");
+        }
     }
 
-    @javafx.fxml.FXML
+    @FXML
     public void searchCourseOnAction(ActionEvent actionEvent) {
+        String searchTerm = searchTxtField.getText().toLowerCase();
+        ObservableList<Course> filteredList = FXCollections.observableArrayList();
+        List<Course> courses = courseData.getAllCourses();
+        for (Course course : courses) {
+            if (course.getName().toLowerCase().contains(searchTerm) ||
+                    course.getDescription().toLowerCase().contains(searchTerm)) {
+                filteredList.add(course);
+            }
+        }
+        tableView.setItems(filteredList);
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

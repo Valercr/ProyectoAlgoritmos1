@@ -154,4 +154,47 @@ public class CircularDoublyLinkedList {
         }
         return result.append(aux.data).toString();//Agrega la data del último nodo
     }
+
+
+    public void remove(Object element) throws ListException {
+        if (isEmpty()) {
+            throw new ListException("Circular Linked List is Empty");
+        }
+        //CASO 1 el elemento a suprimir está al inicio:
+        if (Utility.compare(first.data,element)==0){
+            first=first.next; //saltamos al primer nodo
+        }else {  //caso 2 suprimir el ultimo
+            Node prev = first; //dejo un apuntador al nodo anterior
+            Node aux= first.next;
+            while (aux!=last && !(Utility.compare(aux.data, element)==0)){
+                prev = aux;
+                aux= aux.next;
+            }
+            //se sale cuando encuentra el elemento
+            if (Utility.compare(aux.data, element)==0){
+                //ya lo encontró procede a desenlazar el nodo
+                prev.next= aux.next;
+                //mantengo el doble enlace
+                aux.next.prev = prev;
+            }
+
+            //Que pasas si el elemento a suprimir esta en el ultimo nodo
+            if (aux==last && Utility.compare(aux.data, element)==0){
+                last = prev; //desenlaza el ultimo nodo
+
+            }
+
+
+        }
+        //mantengo el enlace circular y doble
+        last.next = first;
+        first.prev = last;
+
+        //Otro caso:
+        //Si solo queda un nodo y es el que quiero eliminar
+        if (first == last && Utility.compare(first.data, element)==0) {
+            clear();//anulo la lista
+        }
+    }
+
 }

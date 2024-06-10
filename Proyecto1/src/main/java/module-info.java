@@ -4,6 +4,7 @@ module ac.cr.ucr.proyecto1 {
     requires org.jdom2;
     requires java.mail;
     requires java.logging;
+    requires java.xml;
 
 
     opens ucr.proyecto1 to javafx.fxml;

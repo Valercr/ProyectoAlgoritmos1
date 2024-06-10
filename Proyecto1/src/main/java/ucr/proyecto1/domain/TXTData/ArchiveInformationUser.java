@@ -34,25 +34,39 @@ public class ArchiveInformationUser {
         appendUserToFile(user);  //agregar el nuevo usuario al archivo de texto.
     }
 
-    private void loadUsersFromFile() { //leer los usuarios del archivo de texto y agregarlos a la lista circular
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) { //abrir el archivo de texto en modo lectura
-            String line; //almacenar cada línea del archivo.
-
-            while ((line = reader.readLine()) != null) { //continuará ejecutándose hasta que se llegue al final del archivo
-                StringTokenizer tokenizer = new StringTokenizer(line, ","); //dividir la línea leída del archivo en tokens separados por comas
-
-                if (tokenizer.countTokens() == 4) { //asegura que la línea leída del archivo tenga el formato esperado
-                    int id = Integer.parseInt(tokenizer.nextToken()); //obtener el siguiente token para el id del usuario
-                    String name = tokenizer.nextToken(); //obtener el siguiente token para el username
-                    String email = tokenizer.nextToken();//obtener el siguiente token para el email
-                    String encryptedPassword = tokenizer.nextToken();//obtener el siguiente token para la contraseña
-                    users.append(new User(id,name, email,encryptedPassword)); //agregar el nuevo objeto a la lista.
+    private void loadUsersFromFile() {
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                StringTokenizer tokenizer = new StringTokenizer(line, ",");
+                if (tokenizer.countTokens() == 4) {
+                    int id = Integer.parseInt(tokenizer.nextToken());
+                    String name = tokenizer.nextToken();
+                    String email = tokenizer.nextToken();
+                    String encryptedPassword = tokenizer.nextToken();
+                    users.append(new User(id, name, email, encryptedPassword));
+                    System.out.println("Loaded user: " + id + ", " + name + ", " + email);
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public User findUser(int id) {
+        CircularDoublyLinkedList.Node current = users.getFirstNode();
+        if (current == null) return null;
+
+        do {
+            User user = (User) current.getData();
+            if (user.getId() == id) {
+                System.out.println("Found user: " + user.getId() + ", " + user.getName() + ", " + user.getEmail());
+                return user;
+            }
+            current = current.getNext();
+        } while (current != users.getFirstNode());
+        System.out.println("User not found with ID: " + id);
+        return null;
     }
 
     private void appendUserToFile(User user) { //contiene el nombre de usuario, la contraseña y el rol de un usuario que se va a registrar.
@@ -177,17 +191,5 @@ public class ArchiveInformationUser {
         }
     }
 
-    public User findUser(int id) {
-        try {
-            CircularDoublyLinkedList.Node node = users.getNode(users.indexOf(new User(id, null, null, null)));
-            if (node != null) {
-                return (User) node.getData();
-            } else {
-                System.out.println("User not found.");
-            }
-        } catch (ListException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+
 }

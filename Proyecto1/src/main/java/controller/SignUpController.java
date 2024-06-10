@@ -7,6 +7,7 @@ import javafx.scene.layout.BorderPane;
 import ucr.proyecto1.HelloApplication;
 import ucr.proyecto1.domain.TXTData.ArchiveInformationUser;
 import ucr.proyecto1.domain.TXTData.ArchivoTXTPassword;
+import ucr.proyecto1.domain.XMLData.UserXMLData;
 import ucr.proyecto1.domain.data.User;
 import ucr.proyecto1.domain.list.CircularLinkedList;
 import util.UtilityFX;
@@ -38,9 +39,11 @@ public class SignUpController
     @javafx.fxml.FXML
     private TextField txtFieldPassword;
     User user;
+    private UserXMLData userXMLData;
 
     public SignUpController() {
         archiveInformationUser = new ArchiveInformationUser();
+        userXMLData = new UserXMLData();
     }
 
     @javafx.fxml.FXML
@@ -56,15 +59,26 @@ public class SignUpController
         String email = txtField_email.getText();
         String idUser = txtField_idUser.getText();
 
-        //Verficar que no esté ningun textField vacío
+        // Verificar que no esté ningún textField vacío
         if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || email.isEmpty() || idUser.isEmpty()) {
-            alert = util.UtilityFX.alert("Error", "Complete todos los espacios");
-        } else if (!password.equals(confirmPassword)) {// Verificar si las contraseñas no coinciden
-            alert = util.UtilityFX.alert("Trate de nuevo", "Las contraseñas no coinciden");
-        } else // Guardar la información usando la clase ArchivoTXTPassword
+            alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Complete todos los espacios");
+            alert.showAndWait();
+        } else if (!password.equals(confirmPassword)) { // Verificar si las contraseñas no coinciden
+            alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Trate de nuevo");
+            alert.setHeaderText("Las contraseñas no coinciden");
+            alert.showAndWait();
+        } else {
+            // Crear un nuevo usuario y guardar la información usando ArchiveInformationUser
+            int id = Integer.parseInt(idUser);
+            User user = new User(id, username, email, password);
+            archiveInformationUser.registerUser(id, username, email, password);
 
-            archiveInformationUser.registerUser(Integer.parseInt(idUser), username,email, password);
-            user.setEmail(email);
+            // Enviar correo de confirmación
+            userXMLData.sendConfirmationEmail(email, id, password);
+        }
     }
 
 

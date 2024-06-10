@@ -28,14 +28,8 @@ public class UserXMLData {
     private MimeMessage mEmail;
 
 
-    private void emailNotification(String email, int id, String password) throws AddressException {
-        String hourDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-
-        emailTo = email;
-        subject = "Successful Registration";
-        content = "Date and hour of registration: " + hourDate + "\nUser: " + id+ "\nPassword: " + password;
-
-        //Simple mail transfer protocol
+    public UserXMLData() {
+        props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
         props.setProperty("mail.smtp.starttls.enable", "true");
@@ -45,6 +39,14 @@ public class UserXMLData {
         props.setProperty("mail.smtp.auth", "true");
 
         session = Session.getDefaultInstance(props);
+    }
+
+    private void emailNotification(String email, int id, String password) {
+        String hourDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+        emailTo = email;
+        subject = "Successful Registration";
+        content = "Date and hour of registration: " + hourDate + "\nUser: " + id + "\nPassword: " + password;
 
         try {
             mEmail = new MimeMessage(session);
@@ -52,7 +54,7 @@ public class UserXMLData {
             mEmail.setRecipient(Message.RecipientType.TO, new InternetAddress(emailTo));
             mEmail.setSubject(subject);
             mEmail.setText(content, "ISO-8859-1", "html");
-        }catch (AddressException ex){
+        } catch (AddressException ex) {
             Logger.getLogger(UserXMLData.class.getName()).log(Level.SEVERE, null, ex);
         } catch (MessagingException e) {
             throw new RuntimeException(e);
@@ -69,6 +71,15 @@ public class UserXMLData {
         }
 
         System.out.println("Email sent successfully.");
+    }
+
+    public void sendConfirmationEmail(String email, int id, String password) {
+        emailNotification(email, id, password);
+        try {
+            sendEmail();
+        } catch (MessagingException e) {
+            Logger.getLogger(UserXMLData.class.getName()).log(Level.SEVERE, null, e);
+        }
     }
 
 }

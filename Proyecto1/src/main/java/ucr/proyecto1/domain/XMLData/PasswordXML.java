@@ -21,7 +21,7 @@ public class PasswordXML {
     public boolean authenticateUser(String email, String password) {
         List<User> users = userXMLData.getAllUsers();
         for (User user : users) {
-            if (user.getEmail().equals(email) && PasswordEncryption.encryptPassword(password).equals(user.getPassword())) {
+            if (user.getEmail().equals(email) && user.getPassword().equals(PasswordEncryption.encryptPassword(password))) {
                 Utility.roleUsuarioActivo = user.getRole();
                 Utility.nameUsuarioActivo = user.getName();
                 Utility.emailUsuarioActivo = user.getEmail();
@@ -32,4 +32,3 @@ public class PasswordXML {
         return false;
     }
 }
-

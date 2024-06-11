@@ -40,16 +40,17 @@ public class LogInController {
         if (email.isEmpty() || password.isEmpty()) {
             showAlert("Error", "Complete todos los espacios");
         } else {
+            // Verificar autenticación y redirigir según el rol del usuario
             if (passwordXML.authenticateUser(email, password)) {
                 String rolUsuario = Utility.roleUsuarioActivo;
                 switch (rolUsuario.toLowerCase()) {
-                    case "administrador":
+                    case "administrative":
                         util.UtilityFX.loadPage("menuAdministrador.fxml", bp);
                         break;
                     case "instructor":
                         util.UtilityFX.loadPage("menuInstructor.fxml", bp);
                         break;
-                    case "usuario":
+                    case "student":
                         util.UtilityFX.loadPage("menuUsuario.fxml", bp);
                         break;
                     default:

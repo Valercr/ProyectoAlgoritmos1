@@ -7,13 +7,17 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
+import org.jdom2.JDOMException;
 import ucr.proyecto1.domain.XMLData.UserXMLData;
 import ucr.proyecto1.domain.data.User;
+import ucr.proyecto1.domain.list.ListException;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.List;
-
 public class UserMaintenanceController {
 
     @FXML
@@ -33,7 +37,7 @@ public class UserMaintenanceController {
     private ObservableList<User> userList = FXCollections.observableArrayList();
 
     public UserMaintenanceController() throws IOException, JDOMException {
-        userXMLData = new UserXMLData("users.xml");
+        userXMLData = new UserXMLData(); // Ajusta el constructor según tu implementación
     }
 
     @FXML
@@ -54,7 +58,20 @@ public class UserMaintenanceController {
 
     @FXML
     public void searchOnAction(ActionEvent actionEvent) {
-        // Implement search functionality
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Buscar Usuario");
+        dialog.setHeaderText("Buscar Usuario por Nombre");
+        dialog.setContentText("Nombre:");
+
+        String userName = dialog.showAndWait().orElse("");
+        if (!userName.isEmpty()) {
+            User user = userXMLData.findUserByUsername(userName);
+            if (user != null) {
+                tableView.getSelectionModel().select(user);
+            } else {
+                showAlert("Error", "Usuario no encontrado.");
+            }
+        }
     }
 
     @FXML
@@ -63,7 +80,23 @@ public class UserMaintenanceController {
         if (selectedUser == null) {
             showAlert("Error", "Por favor, seleccione un usuario para modificar.");
         } else {
-            // Implement modify functionality
+            // Implementar la funcionalidad de modificar el usuario
+            TextInputDialog dialog = new TextInputDialog(selectedUser.getName());
+            dialog.setTitle("Modificar Usuario");
+            dialog.setHeaderText("Modificar Usuario");
+            dialog.setContentText("Nuevo Nombre:");
+
+            String newName = dialog.showAndWait().orElse("");
+            if (!newName.isEmpty()) {
+                try {
+                    selectedUser.setName(newName);
+                    userXMLData.updateUser(selectedUser);
+                    tableView.refresh();
+                } catch (IOException | ListException e) {
+                    showAlert("Error", "No se pudo modificar el usuario.");
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -86,7 +119,25 @@ public class UserMaintenanceController {
 
     @FXML
     public void addOnAction(ActionEvent actionEvent) {
-        // Implement add user functionality
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Agregar Usuario");
+        dialog.setHeaderText("Agregar Nuevo Usuario");
+        dialog.setContentText("Nombre:");
+
+        String newName = dialog.showAndWait().orElse("");
+        if (!newName.isEmpty()) {
+            try {
+                // Solicitar otros detalles del usuario como email, password, etc.
+                int newId = userList.size() + 1; // Generar un ID para el nuevo usuario
+                User newUser = new User(newId, newName, "newEmail@example.com", "defaultPassword", "usuario"); // Ajusta según los detalles solicitados
+                userXMLData.addUser(newUser);
+                userList.add(newUser);
+                tableView.refresh();
+            } catch (IOException | MessagingException e) {
+                showAlert("Error", "No se pudo agregar el usuario.");
+                e.printStackTrace();
+            }
+        }
     }
 
     private void showAlert(String title, String message) {

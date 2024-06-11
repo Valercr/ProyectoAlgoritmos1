@@ -6,8 +6,8 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import ucr.proyecto1.domain.XMLData.UserXMLData;
 import ucr.proyecto1.domain.data.User;
-
 public class ModifyUserController {
     @FXML
     private TextField txtField_userName;
@@ -72,17 +72,27 @@ public class ModifyUserController {
                 userToModify.setEmail(email);
                 userToModify.setPassword(password);
 
-                // Lógica para actualizar la información del usuario donde sea necesario
+                // Lógica para actualizar la información del usuario
+                updateUserInDataSource(userToModify);
 
                 util.UtilityFX.alert("Éxito", "Usuario modificado exitosamente.");
                 util.UtilityFX.loadPage("userMaintenance.fxml", bp);
             } catch (NumberFormatException e) {
                 util.UtilityFX.alert("Error", "Error al modificar el usuario: " + e.getMessage());
+            } catch (Exception e) {
+                util.UtilityFX.alert("Error", "Ocurrió un error al modificar el usuario.");
             }
         }
     }
 
     @FXML
     public void txtFieldConfirmPassword(ActionEvent actionEvent) {
+        // Implementar si es necesario la confirmación de la contraseña
+    }
+
+    private void updateUserInDataSource(User user) throws Exception {
+        // Implementa la lógica para actualizar el usuario en la fuente de datos (e.g., XML, base de datos)
+        UserXMLData userXMLData = new UserXMLData();
+        userXMLData.updateUser(user);
     }
 }

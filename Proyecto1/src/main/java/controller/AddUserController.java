@@ -6,6 +6,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import ucr.proyecto1.domain.XMLData.UserXMLData;
+import ucr.proyecto1.domain.data.User;
 
 public class AddUserController {
     @FXML
@@ -23,11 +25,15 @@ public class AddUserController {
     @FXML
     private ComboBox<String> cBoxRole;
 
-    private InformationUserXML informationUserXML;
+    private UserXMLData userXMLData;
 
     @FXML
     public void initialize() {
-        informationUserXML = new InformationUserXML();
+        try {
+            userXMLData = new UserXMLData();
+        } catch (Exception e) {
+            util.UtilityFX.alert("Error", "Ocurrió un error al inicializar los datos del usuario.");
+        }
         cBoxRole.getItems().addAll("Administrador", "Usuario", "Inspector");
     }
 
@@ -42,7 +48,7 @@ public class AddUserController {
             String role = cBoxRole.getValue();
 
             if (password.isEmpty() || confirmPassword.isEmpty() || name.isEmpty() || email.isEmpty() || role == null) {
-                util.UtilityFX.alert( "Error", "Todos los campos deben ser llenados.");
+                util.UtilityFX.alert("Error", "Todos los campos deben ser llenados.");
                 return;
             }
 
@@ -51,7 +57,8 @@ public class AddUserController {
                 return;
             }
 
-            informationUserXML.registerUser(id, name, email, password);
+            User newUser = new User(id, name, password, email, role);
+            userXMLData.add(newUser);
             util.UtilityFX.alert("Éxito", "Usuario creado exitosamente.", Alert.AlertType.INFORMATION);
             clearFields();
         } catch (NumberFormatException e) {

@@ -1,33 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <users>
-    <user id="1">
-        <name>admin</name>
-        <password>5e884898da28047151d0e56f8dc6292773603d0d6aabbddc3fd93a55e1d5bb88</password>
-        <email>admin@example.com</email>
-        <role>administrador</role>
-    </user>
-    <user id="2">
-        <name>instructor1</name>
-        <password>5e884898da28047151d0e56f8dc6292773603d0d6aabbddc3fd93a55e1d5bb88</password>
-        <email>instructor1@example.com</email>
-        <role>instructor</role>
-    </user>
-    <user id="3">
-        <name>usuario1</name>
-        <password>5e884898da28047151d0e56f8dc6292773603d0d6aabbddc3fd93a55e1d5bb88</password>
-        <email>usuario1@example.com</email>
-        <role>usuario</role>
-    </user>
-    <user id="4">
-        <name>instructor2</name>
-        <password>5e884898da28047151d0e56f8dc6292773603d0d6aabbddc3fd93a55e1d5bb88</password>
-        <email>instructor2@example.com</email>
-        <role>instructor</role>
-    </user>
-    <user id="5">
-        <name>usuario2</name>
-        <password>5e884898da28047151d0e56f8dc6292773603d0d6aabbddc3fd93a55e1d5bb88</password>
-        <email>usuario2@example.com</email>
-        <role>usuario</role>
-    </user>
+  <user id="1">
+    <name>a</name>
+    <password>a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3</password>
+    <email>a@gmail.com</email>
+    <role>usuario</role>
+  </user>
+  <user id="999">
+          <name>admin</name>
+          <password>5e884898da28047151d0e56f8dc6292773603d0d6aabbddc3fd93a55e1d5bb88</password>
+          <email>admin@example.com</email>
+          <role>administrador</role>
+      </user>
+      <user id="2">
+          <name>instructor1</name>
+          <password>5e884898da28047151d0e56f8dc6292773603d0d6aabbddc3fd93a55e1d5bb88</password>
+          <email>instructor1@example.com</email>
+          <role>instructor</role>
+      </user>
+      <user id="3">
+          <name>usuario1</name>
+          <password>5e884898da28047151d0e56f8dc6292773603d0d6aabbddc3fd93a55e1d5bb88</password>
+          <email>usuario1@example.com</email>
+          <role>usuario</role>
+      </user>
+      <user id="4">
+          <name>instructor2</name>
+          <password>5e884898da28047151d0e56f8dc6292773603d0d6aabbddc3fd93a55e1d5bb88</password>
+          <email>instructor2@example.com</email>
+          <role>instructor</role>
+      </user>
+      <user id="5">
+          <name>usuario2</name>
+          <password>5e884898da28047151d0e56f8dc6292773603d0d6aabbddc3fd93a55e1d5bb88</password>
+          <email>usuario2@example.com</email>
+          <role>usuario</role>
+      </user>
 </users>

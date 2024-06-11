@@ -32,9 +32,9 @@ public class AddUserController {
         try {
             userXMLData = new UserXMLData();
         } catch (Exception e) {
-            util.UtilityFX.alert("Error", "Ocurrió un error al inicializar los datos del usuario.");
+            showAlert("Error", "Ocurrió un error al inicializar los datos del usuario.");
         }
-        cBoxRole.getItems().addAll("Administrador", "Usuario", "Inspector");
+        cBoxRole.getItems().addAll("Administrador", "Usuario", "Instructor");
     }
 
     @FXML
@@ -48,23 +48,23 @@ public class AddUserController {
             String role = cBoxRole.getValue();
 
             if (password.isEmpty() || confirmPassword.isEmpty() || name.isEmpty() || email.isEmpty() || role == null) {
-                util.UtilityFX.alert("Error", "Todos los campos deben ser llenados.");
+                showAlert("Error", "Todos los campos deben ser llenados.");
                 return;
             }
 
             if (!password.equals(confirmPassword)) {
-                util.UtilityFX.alert("Error", "Las contraseñas no coinciden.", Alert.AlertType.ERROR);
+                showAlert("Error", "Las contraseñas no coinciden.");
                 return;
             }
 
             User newUser = new User(id, name, password, email, role);
-            userXMLData.add(newUser);
-            util.UtilityFX.alert("Éxito", "Usuario creado exitosamente.", Alert.AlertType.INFORMATION);
+            userXMLData.addUser(newUser);
+            showAlert("Éxito", "Usuario creado exitosamente.");
             clearFields();
         } catch (NumberFormatException e) {
-            util.UtilityFX.alert("Error", "El formato del ID del usuario es inválido.", Alert.AlertType.ERROR);
+            showAlert("Error", "El formato del ID del usuario es inválido.");
         } catch (Exception e) {
-            util.UtilityFX.alert("Error", "Ocurrió un error: " + e.getMessage(), Alert.AlertType.ERROR);
+            showAlert("Error", "Ocurrió un error: " + e.getMessage());
         }
     }
 
@@ -75,5 +75,13 @@ public class AddUserController {
         txtFieldPassword.clear();
         txtFieldConfirmPassword.clear();
         cBoxRole.getSelectionModel().clearSelection();
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

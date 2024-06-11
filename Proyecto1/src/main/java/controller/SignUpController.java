@@ -60,43 +60,22 @@ public class SignUpController {
         String email = txtField_email.getText();
         String idUser = txtField_idUser.getText();
 
-        // Verificar que no esté ningún textField vacío
         if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || email.isEmpty() || idUser.isEmpty()) {
-            alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Complete todos los espacios");
-            alert.showAndWait();
-        } else if (!password.equals(confirmPassword)) { // Verificar si las contraseñas no coinciden
-            alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Trate de nuevo");
-            alert.setHeaderText("Las contraseñas no coinciden");
-            alert.showAndWait();
+            showAlert("Error", "Complete todos los espacios");
+        } else if (!password.equals(confirmPassword)) {
+            showAlert("Trate de nuevo", "Las contraseñas no coinciden");
         } else {
-            // Crear un nuevo usuario y guardar la información usando UserXMLData
             try {
                 int id = Integer.parseInt(idUser);
-                String encryptedPassword = PasswordEncryption.encryptPassword(password);
-                User user = new User(id, username, email, encryptedPassword, "usuario"); // Asumiendo el rol "usuario" por defecto
+                User user = new User(id, username, password, email, "usuario");
                 userXMLData.addUser(user);
 
-                alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Registro Exitoso");
-                alert.setHeaderText("Usuario registrado correctamente");
-                alert.showAndWait();
-
-                // Cargar la página de inicio de sesión
+                showAlert("Registro Exitoso", "Usuario registrado correctamente");
                 util.UtilityFX.loadPage("logIn.fxml", bp);
             } catch (NumberFormatException e) {
-                alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("ID de usuario inválido");
-                alert.showAndWait();
+                showAlert("Error", "ID de usuario inválido");
             } catch (IOException | MessagingException e) {
-                alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("Ocurrió un error al registrar el usuario");
-                alert.setContentText(e.getMessage());
-                alert.showAndWait();
+                showAlert("Error", "Ocurrió un error al registrar el usuario: " + e.getMessage());
             }
         }
     }
@@ -121,5 +100,13 @@ public class SignUpController {
             txtFieldConfirmPassword.setVisible(false);
             confirmPasswordField.setVisible(true);
         }
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

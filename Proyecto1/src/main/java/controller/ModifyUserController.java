@@ -2,6 +2,7 @@ package controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -25,6 +26,7 @@ public class ModifyUserController {
     private BorderPane bp;
 
     private static User userToModify;
+    private UserXMLData userXMLData;
 
     public static void setUserToModify(User user) {
         userToModify = user;
@@ -64,7 +66,7 @@ public class ModifyUserController {
         String idUser = txtField_idUser.getText();
 
         if (idUser.isEmpty()) {
-            util.UtilityFX.alert("Error", "Debe ingresar un ID de usuario válido.");
+            showAlert("Error", "Debe ingresar un ID de usuario válido.");
         } else {
             try {
                 int id = Integer.parseInt(idUser);
@@ -72,27 +74,23 @@ public class ModifyUserController {
                 userToModify.setEmail(email);
                 userToModify.setPassword(password);
 
-                // Lógica para actualizar la información del usuario
-                updateUserInDataSource(userToModify);
+                userXMLData.updateUser(userToModify);
 
-                util.UtilityFX.alert("Éxito", "Usuario modificado exitosamente.");
+                showAlert("Éxito", "Usuario modificado exitosamente.");
                 util.UtilityFX.loadPage("userMaintenance.fxml", bp);
             } catch (NumberFormatException e) {
-                util.UtilityFX.alert("Error", "Error al modificar el usuario: " + e.getMessage());
+                showAlert("Error", "Error al modificar el usuario: " + e.getMessage());
             } catch (Exception e) {
-                util.UtilityFX.alert("Error", "Ocurrió un error al modificar el usuario.");
+                showAlert("Error", "Ocurrió un error al modificar el usuario.");
             }
         }
     }
 
-    @FXML
-    public void txtFieldConfirmPassword(ActionEvent actionEvent) {
-        // Implementar si es necesario la confirmación de la contraseña
-    }
-
-    private void updateUserInDataSource(User user) throws Exception {
-        // Implementa la lógica para actualizar el usuario en la fuente de datos (e.g., XML, base de datos)
-        UserXMLData userXMLData = new UserXMLData();
-        userXMLData.updateUser(user);
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

@@ -2,11 +2,15 @@ package controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import ucr.proyecto1.domain.TXTData.PasswordEncryption;
 import ucr.proyecto1.domain.XMLData.PasswordXML;
 import util.Utility;
+
+import static util.Utility.usuariosSistema;
 public class LogInController {
 
     @FXML
@@ -34,26 +38,35 @@ public class LogInController {
         String password = passwordField.getText();
 
         if (email.isEmpty() || password.isEmpty()) {
-            util.UtilityFX.alert("Error", "Complete todos los espacios");
+            showAlert("Error", "Complete todos los espacios");
         } else {
             if (passwordXML.authenticateUser(email, password)) {
-                switch (Utility.roleUsuarioActivo.toLowerCase()) {
-                    case "administrative":
-                        util.UtilityFX.loadPage("menuManager.fxml", bp);
+                String rolUsuario = Utility.roleUsuarioActivo;
+                switch (rolUsuario.toLowerCase()) {
+                    case "administrador":
+                        util.UtilityFX.loadPage("menuAdministrador.fxml", bp);
                         break;
                     case "instructor":
                         util.UtilityFX.loadPage("menuInstructor.fxml", bp);
                         break;
-                    case "user":
-                        util.UtilityFX.loadPage("menuUser.fxml", bp);
+                    case "usuario":
+                        util.UtilityFX.loadPage("menuUsuario.fxml", bp);
                         break;
                     default:
-                        util.UtilityFX.alert("Error", "Rol de usuario desconocido");
+                        showAlert("Error", "Rol de usuario desconocido");
                         break;
                 }
             } else {
-                util.UtilityFX.alert("Error", "Usuario o contraseña incorrectos");
+                showAlert("Error", "Usuario o contraseña incorrectos");
             }
         }
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

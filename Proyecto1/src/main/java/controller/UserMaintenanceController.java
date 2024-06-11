@@ -37,7 +37,7 @@ public class UserMaintenanceController {
     private ObservableList<User> userList = FXCollections.observableArrayList();
 
     public UserMaintenanceController() throws IOException, JDOMException {
-        userXMLData = new UserXMLData(); // Ajusta el constructor según tu implementación
+        userXMLData = new UserXMLData();
     }
 
     @FXML

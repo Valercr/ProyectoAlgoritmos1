@@ -1,12 +1,9 @@
 package controller;
 
 import javafx.event.ActionEvent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import ucr.proyecto1.domain.TXTData.InformationUserXML;
-import ucr.proyecto1.domain.TXTData.PasswordXML;
 import util.Utility;
 
 public class LogInController

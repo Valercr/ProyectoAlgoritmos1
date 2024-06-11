@@ -6,24 +6,25 @@ import util.Utility;
 import java.io.FileReader;
 
 public class CircularDoublyLinkedList {
-    private Node first; //apuntador al inicio de la lista
-    private Node last; //apuntador al final de la lista
+    private Node first;
+    private Node last;
 
     public CircularDoublyLinkedList() {
-        this.first = null; //la lista no existe
-        this.last = null; //la lista no existe
+        this.first = null;
+        this.last = null;
     }
 
     public int size() throws ListException {
+        if (isEmpty()) {
+            throw new ListException("Circular Doubly Linked List is Empty");
+        }
         int count = 0;
         Node current = first;
-
-        while (current != last) {//mientas que no llegue al último, por ser circular
+        while (current != last) {
             count++;
             current = current.next;
         }
-
-        return count+1;//Para que cuente el último nodo +1
+        return count + 1;
     }
 
     public void append(User data) {
@@ -71,31 +72,30 @@ public class CircularDoublyLinkedList {
     }
 
     public void clear() {
-        this.first = null; //anulamos la lista
-        this.last = null; //anulamos la lista
+        this.first = null;
+        this.last = null;
     }
 
     public boolean isEmpty() {
-        return this.first == null; //si es nulo está vacía
+        return this.first == null;
     }
 
-
-    public boolean contains(Object element) throws ListException {
+    public boolean contains(User element) throws ListException {
         if (isEmpty()) {
             throw new ListException("Circular Doubly Linked List is Empty");
         }
         Node current = first;
         do {
-            if (Utility.compare(current.data, element) == 0) {
-                return true; // Elemento encontrado en la lista
+            if (current.data.equals(element)) {
+                return true;
             }
             current = current.next;
         } while (current != first);
         return false;
     }
 
-    public void add(Object element) {
-        Node newNode = new Node((User) element);
+    public void add(User element) {
+        Node newNode = new Node(element);
         if (isEmpty()) {
             first = last = newNode;
             first.next = first.prev = first;
@@ -108,20 +108,20 @@ public class CircularDoublyLinkedList {
         }
     }
 
-    public int indexOf(Object element) throws ListException {
+    public int indexOf(User element) throws ListException {
         if (isEmpty()) {
             throw new ListException("Circular Doubly Linked List is Empty");
         }
         Node current = first;
         int index = 0;
         do {
-            if (util.Utility.compare(current.data, element) == 0) {
+            if (current.data.equals(element)) {
                 return index;
             }
             index++;
             current = current.next;
         } while (current != first);
-        return -1; //indica que el elemento no existe
+        return -1;
     }
 
     public Node getNode(int index) throws ListException {
@@ -129,7 +129,7 @@ public class CircularDoublyLinkedList {
             throw new ListException("Circular Doubly Linked List is Empty");
         }
         Node current = first;
-        int i = 0; // índice del primer nodo
+        int i = 0;
         do {
             if (i == index) {
                 return current;
@@ -137,7 +137,7 @@ public class CircularDoublyLinkedList {
             i++;
             current = current.next;
         } while (current != first);
-        return null; //si llega aquí es porque no encontró el índice
+        return null;
     }
 
     public Node getFirstNode() {
@@ -152,49 +152,34 @@ public class CircularDoublyLinkedList {
             result.append(aux.data).append("\n");
             aux = aux.next;
         }
-        return result.append(aux.data).toString();//Agrega la data del último nodo
+        return result.append(aux.data).toString();
     }
 
-
-    public void remove(Object element) throws ListException {
+    public void remove(User element) throws ListException {
         if (isEmpty()) {
-            throw new ListException("Circular Linked List is Empty");
+            throw new ListException("Circular Doubly Linked List is Empty");
         }
-        //CASO 1 el elemento a suprimir está al inicio:
-        if (Utility.compare(first.data,element)==0){
-            first=first.next; //saltamos al primer nodo
-        }else {  //caso 2 suprimir el ultimo
-            Node prev = first; //dejo un apuntador al nodo anterior
-            Node aux= first.next;
-            while (aux!=last && !(Utility.compare(aux.data, element)==0)){
+        if (first.data.equals(element)) {
+            first = first.next;
+            first.prev = last;
+            last.next = first;
+            if (first == last) {
+                clear();
+            }
+        } else {
+            Node prev = first;
+            Node aux = first.next;
+            while (aux != first && !aux.data.equals(element)) {
                 prev = aux;
-                aux= aux.next;
+                aux = aux.next;
             }
-            //se sale cuando encuentra el elemento
-            if (Utility.compare(aux.data, element)==0){
-                //ya lo encontró procede a desenlazar el nodo
-                prev.next= aux.next;
-                //mantengo el doble enlace
+            if (aux.data.equals(element)) {
+                prev.next = aux.next;
                 aux.next.prev = prev;
+                if (aux == last) {
+                    last = prev;
+                }
             }
-
-            //Que pasas si el elemento a suprimir esta en el ultimo nodo
-            if (aux==last && Utility.compare(aux.data, element)==0){
-                last = prev; //desenlaza el ultimo nodo
-
-            }
-
-
-        }
-        //mantengo el enlace circular y doble
-        last.next = first;
-        first.prev = last;
-
-        //Otro caso:
-        //Si solo queda un nodo y es el que quiero eliminar
-        if (first == last && Utility.compare(first.data, element)==0) {
-            clear();//anulo la lista
         }
     }
-
 }

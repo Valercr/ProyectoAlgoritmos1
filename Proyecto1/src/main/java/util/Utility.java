@@ -1,6 +1,9 @@
 package util;
 
+import ucr.proyecto1.domain.XMLData.UserXMLData;
+import ucr.proyecto1.domain.data.User;
 import ucr.proyecto1.domain.list.CircularDoublyLinkedList;
+import ucr.proyecto1.domain.list.CircularLinkedList;
 import ucr.proyecto1.domain.list.SinglyLinkedList;
 import ucr.proyecto1.domain.tree.BTree;
 
@@ -10,8 +13,12 @@ import java.util.Random;
 
 public class Utility {
 
-    //static init
-    static {
+
+    public static void loadUsersFromXML(CircularDoublyLinkedList cdll, CircularLinkedList cll, UserXMLData userXMLData) {
+        for (User user : userXMLData.getAllUsers()) {
+            cdll.add(user);
+            cll.append(user);
+        }
     }
 
     public static String format(double value){

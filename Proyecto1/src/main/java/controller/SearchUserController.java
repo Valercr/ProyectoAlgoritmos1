@@ -6,7 +6,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import ucr.proyecto1.domain.TXTData.InformationUserXML;
 import ucr.proyecto1.domain.data.User;
 
 public class SearchUserController {

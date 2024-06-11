@@ -22,7 +22,6 @@ public class Email {
     private Properties props;
     private Session session;
     private MimeMessage mEmail;
-//holi
 
     public Email() {
         props = new Properties();

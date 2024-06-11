@@ -9,8 +9,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
-import ucr.proyecto1.domain.TXTData.InformationUserXML;
-import ucr.proyecto1.domain.TXTData.PasswordXML;
 import ucr.proyecto1.domain.XMLData.Email;
 import ucr.proyecto1.domain.data.User;
 

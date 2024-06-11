@@ -2,43 +2,24 @@ package ucr.proyecto1.domain.data;
 
 import java.util.Objects;
 
+import java.util.Objects;
+
 public class User {
     private int id;
     private String name;
-    private String email;
     private String password;
+    private String email;
+    private String role;
 
-
-
-    public void setRole(String level) {
-        if (!role.equalsIgnoreCase("User") && !role.equalsIgnoreCase("Admin") && !role.equalsIgnoreCase("Instructor")) {
-            throw new IllegalArgumentException("Invalid level. Level must be one of the following: low, medium, high.");
-        }
-        this.role = level;
-    }
-
-
-    public User(int id, String name, String email, String password) {
+    public User(int id, String name, String password, String email, String role) {
         this.id = id;
         this.name = name;
+        this.password = password;
         this.email = email;
-        this.password = password;
-    }
-
-    public User(String name, String password, String role) {
-        this.name = name;
-        this.password = password;
         this.role = role;
     }
 
-    private String role;
-
-
-
-    public String getRole() {
-        return role;
-    }
-
+    // Getters y Setters con validaciones básicas
     public int getId() {
         return id;
     }
@@ -55,15 +36,10 @@ public class User {
     }
 
     public void setName(String name) {
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be null or empty.");
+        }
         this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getPassword() {
@@ -71,7 +47,32 @@ public class User {
     }
 
     public void setPassword(String password) {
+        if (password == null || password.isEmpty()) {
+            throw new IllegalArgumentException("Password cannot be null or empty.");
+        }
         this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        if (email == null || email.isEmpty()) {
+            throw new IllegalArgumentException("Email cannot be null or empty.");
+        }
+        this.email = email;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        if (!role.equalsIgnoreCase("student") && !role.equalsIgnoreCase("instructor") && !role.equalsIgnoreCase("administrative")) {
+            throw new IllegalArgumentException("Invalid role. Role must be one of the following: student, instructor, administrative.");
+        }
+        this.role = role;
     }
 
     @Override
@@ -79,12 +80,12 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && Objects.equals(name, user.name) && Objects.equals(email, user.email) && Objects.equals(password, user.password);
+        return id == user.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, password);
+        return Objects.hash(id);
     }
 
     @Override
@@ -93,7 +94,7 @@ public class User {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
                 '}';
     }
 }

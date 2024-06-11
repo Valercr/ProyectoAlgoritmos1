@@ -21,7 +21,7 @@ public class Utility {
 
     public static UserXMLData userData;
 
-    public static User usuariosActivos=null;
+    public static String usuariosActivos= "";
 
     static {
         try {

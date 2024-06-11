@@ -10,23 +10,26 @@ import ucr.proyecto1.domain.TXTData.PasswordEncryption;
 import ucr.proyecto1.domain.data.User;
 import ucr.proyecto1.domain.list.CircularDoublyLinkedList;
 import ucr.proyecto1.domain.list.ListException;
+import util.Utility;
 
 import javax.mail.MessagingException;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 public class UserXMLData {
     private String filePath;
     private Element root;
     private Document document;
-    public CircularDoublyLinkedList userList;
     private Email emailSender;
+    private CircularDoublyLinkedList userList;
 
-    public UserXMLData(String filePath) throws IOException, JDOMException {
-        this.filePath = filePath;
-        this.userList = new CircularDoublyLinkedList();
+
+    public UserXMLData() throws IOException, JDOMException {
+        this.filePath = "users";
+        this.userList = Utility.usuarios;
         this.emailSender = new Email();
         File file = new File(filePath);
         if (!file.exists()) {
@@ -41,8 +44,8 @@ public class UserXMLData {
         loadUsersToLinkedList();
     }
 
-    public List<User> getAllUsers() {
-        List<User> users = new ArrayList<>();
+    public ArrayList<User> getAllUsers() {
+        ArrayList<User> users = new ArrayList<>();
         List<Element> userElements = root.getChildren("user");
         for (Element userElement : userElements) {
             users.add(buildUserFromElement(userElement));
@@ -191,6 +194,14 @@ public class UserXMLData {
         return new User(id, name, password, email, role);
     }
 
+    public   void llenarCircularList(){
+
+        ArrayList<User> userList = getAllUsers();
+        for (int i = 0; i < userList.size() ; i++) {
+            Utility.usuarios.add(userList.get(i));
+        }
+
+    }
     private String getElementText(Element parentElement, String childName) {
         Element childElement = parentElement.getChild(childName);
         return (childElement != null) ? childElement.getText() : "";

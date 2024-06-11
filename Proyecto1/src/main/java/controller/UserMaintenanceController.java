@@ -9,12 +9,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
-import ucr.proyecto1.domain.XMLData.Email;
+import ucr.proyecto1.domain.XMLData.UserXMLData;
 import ucr.proyecto1.domain.data.User;
 
 import java.util.List;
 
 public class UserMaintenanceController {
+
     @FXML
     private TableView<User> tableView;
     @FXML
@@ -28,16 +29,15 @@ public class UserMaintenanceController {
     @FXML
     private BorderPane bp;
 
-    private InformationUserXML informationUserXML;
+    private UserXMLData userXMLData;
     private ObservableList<User> userList = FXCollections.observableArrayList();
-    private Email email;
-    private PasswordXML passwordXML;
+
+    public UserMaintenanceController() throws IOException, JDOMException {
+        userXMLData = new UserXMLData("users.xml");
+    }
 
     @FXML
     public void initialize() {
-        informationUserXML = new InformationUserXML(); // Inicializa InformationUserXML
-        email = new Email();
-
         idTColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameTColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         emailTColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
@@ -47,39 +47,38 @@ public class UserMaintenanceController {
     }
 
     private void loadUserData() {
-        try {
-            List<User> users = informationUserXML.getUserList(); // Utiliza getUserList() para obtener los usuarios
-            userList.addAll(users);
-            tableView.setItems(userList);
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
+        List<User> users = userXMLData.getAllUsers();
+        userList.addAll(users);
+        tableView.setItems(userList);
     }
 
     @FXML
     public void searchOnAction(ActionEvent actionEvent) {
-        util.UtilityFX.loadPage("searchUser.fxml", bp);
+        // Implement search functionality
     }
 
     @FXML
     public void modifyOnAction(ActionEvent actionEvent) {
         User selectedUser = tableView.getSelectionModel().getSelectedItem();
-
         if (selectedUser == null) {
             showAlert("Error", "Por favor, seleccione un usuario para modificar.");
         } else {
-            util.UtilityFX.loadPage("modifyUser.fxml", bp);
+            // Implement modify functionality
         }
     }
 
     @FXML
     public void deleteOnAction(ActionEvent actionEvent) {
-        User selectedIndex = tableView.getSelectionModel().getSelectedItem();
-
-        if (selectedIndex != null) {
-            informationUserXML.deleteUser(selectedIndex.getId());
-            userList.remove(selectedIndex);
-            tableView.getItems().remove(selectedIndex);
+        User selectedUser = tableView.getSelectionModel().getSelectedItem();
+        if (selectedUser != null) {
+            try {
+                userXMLData.removeUser(selectedUser.getId());
+                userList.remove(selectedUser);
+                tableView.getItems().remove(selectedUser);
+            } catch (IOException | ListException e) {
+                showAlert("Error", "No se pudo eliminar el usuario.");
+                e.printStackTrace();
+            }
         } else {
             showAlert("Error", "Por favor, seleccione un usuario para eliminar.");
         }
@@ -87,7 +86,7 @@ public class UserMaintenanceController {
 
     @FXML
     public void addOnAction(ActionEvent actionEvent) {
-        util.UtilityFX.loadPage("addUser.fxml", bp);
+        // Implement add user functionality
     }
 
     private void showAlert(String title, String message) {

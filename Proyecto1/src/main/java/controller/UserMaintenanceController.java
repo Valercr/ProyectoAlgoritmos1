@@ -80,23 +80,8 @@ public class UserMaintenanceController {
         if (selectedUser == null) {
             showAlert("Error", "Por favor, seleccione un usuario para modificar.");
         } else {
-            // Implementar la funcionalidad de modificar el usuario
-            TextInputDialog dialog = new TextInputDialog(selectedUser.getName());
-            dialog.setTitle("Modificar Usuario");
-            dialog.setHeaderText("Modificar Usuario");
-            dialog.setContentText("Nuevo Nombre:");
-
-            String newName = dialog.showAndWait().orElse("");
-            if (!newName.isEmpty()) {
-                try {
-                    selectedUser.setName(newName);
-                    userXMLData.updateUser(selectedUser);
-                    tableView.refresh();
-                } catch (IOException | ListException e) {
-                    showAlert("Error", "No se pudo modificar el usuario.");
-                    e.printStackTrace();
-                }
-            }
+            ModifyUserController.setUserToModify(selectedUser);
+            util.UtilityFX.loadPage("modifyUser.fxml", bp);
         }
     }
 
@@ -119,25 +104,7 @@ public class UserMaintenanceController {
 
     @FXML
     public void addOnAction(ActionEvent actionEvent) {
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Agregar Usuario");
-        dialog.setHeaderText("Agregar Nuevo Usuario");
-        dialog.setContentText("Nombre:");
-
-        String newName = dialog.showAndWait().orElse("");
-        if (!newName.isEmpty()) {
-            try {
-                // Solicitar otros detalles del usuario como email, password, etc.
-                int newId = userList.size() + 1; // Generar un ID para el nuevo usuario
-                User newUser = new User(newId, newName, "newEmail@example.com", "defaultPassword", "usuario"); // Ajusta según los detalles solicitados
-                userXMLData.addUser(newUser);
-                userList.add(newUser);
-                tableView.refresh();
-            } catch (IOException | MessagingException e) {
-                showAlert("Error", "No se pudo agregar el usuario.");
-                e.printStackTrace();
-            }
-        }
+        util.UtilityFX.loadPage("addUser.fxml", bp);
     }
 
     private void showAlert(String title, String message) {

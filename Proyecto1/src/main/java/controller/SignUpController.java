@@ -1,49 +1,58 @@
 package controller;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import org.jdom2.JDOMException;
+import ucr.proyecto1.domain.TXTData.PasswordEncryption;
 import ucr.proyecto1.domain.XMLData.Email;
+import ucr.proyecto1.domain.XMLData.UserXMLData;
 import ucr.proyecto1.domain.data.User;
 
-import static util.UtilityFX.loadPage;
+import javax.mail.MessagingException;
+import java.io.IOException;
 
-public class SignUpController
-{
-    @javafx.fxml.FXML
+import static util.UtilityFX.loadPage;
+public class SignUpController {
+
+    @FXML
     private TextField txtField_userName;
-    @javafx.fxml.FXML
+    @FXML
     private TextField txtField_email;
-    @javafx.fxml.FXML
+    @FXML
     private TextField txtField_idUser;
-    InformationUserXML informationUserXML;
-    Alert alert;
-    @javafx.fxml.FXML
+    @FXML
     private PasswordField passwordField;
-    @javafx.fxml.FXML
+    @FXML
     private BorderPane bp;
-    @javafx.fxml.FXML
+    @FXML
     private PasswordField confirmPasswordField;
-    @javafx.fxml.FXML
+    @FXML
     private CheckBox showPassword;
-    @javafx.fxml.FXML
+    @FXML
     private TextField txtFieldConfirmPassword;
-    @javafx.fxml.FXML
+    @FXML
     private TextField txtFieldPassword;
-    User user;
-    private Email userXMLData;
+
+    private UserXMLData userXMLData;
+    private Alert alert;
 
     public SignUpController() {
-        informationUserXML = new InformationUserXML();
-        userXMLData = new Email();
+        try {
+            userXMLData = new UserXMLData();
+        } catch (IOException | JDOMException e) {
+            e.printStackTrace();
+        }
     }
 
-    @javafx.fxml.FXML
+    @FXML
     public void initialize() {
-
+        txtFieldPassword.setVisible(false);
+        txtFieldConfirmPassword.setVisible(false);
     }
 
-    @javafx.fxml.FXML
+    @FXML
     public void signUpOnAction(ActionEvent actionEvent) {
         String username = txtField_userName.getText();
         String password = passwordField.getText();
@@ -63,25 +72,41 @@ public class SignUpController
             alert.setHeaderText("Las contraseñas no coinciden");
             alert.showAndWait();
         } else {
-            // Crear un nuevo usuario y guardar la información usando ArchiveInformationUser
-            int id = Integer.parseInt(idUser);
-            User user = new User(id, username, email, password);
-            informationUserXML.registerUser(id, username, email, password);
+            // Crear un nuevo usuario y guardar la información usando UserXMLData
+            try {
+                int id = Integer.parseInt(idUser);
+                String encryptedPassword = PasswordEncryption.encryptPassword(password);
+                User user = new User(id, username, email, encryptedPassword, "usuario"); // Asumiendo el rol "usuario" por defecto
+                userXMLData.addUser(user);
 
-            // Enviar correo de confirmación
-            userXMLData.sendConfirmationEmail(email, id, password);
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Registro Exitoso");
+                alert.setHeaderText("Usuario registrado correctamente");
+                alert.showAndWait();
+
+                // Cargar la página de inicio de sesión
+                util.UtilityFX.loadPage("logIn.fxml", bp);
+            } catch (NumberFormatException e) {
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("ID de usuario inválido");
+                alert.showAndWait();
+            } catch (IOException | MessagingException e) {
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Ocurrió un error al registrar el usuario");
+                alert.setContentText(e.getMessage());
+                alert.showAndWait();
+            }
         }
     }
 
-
-
-    @javafx.fxml.FXML
+    @FXML
     public void logInOnAction(ActionEvent actionEvent) {
-        util.UtilityFX.loadPage("logIn.fxml", bp);//Cargar LogIn
-
+        util.UtilityFX.loadPage("logIn.fxml", bp); // Cargar LogIn
     }
 
-    @javafx.fxml.FXML
+    @FXML
     public void changeVisibility(ActionEvent actionEvent) {
         if (showPassword.isSelected()) {
             txtFieldPassword.setText(passwordField.getText());
@@ -90,11 +115,11 @@ public class SignUpController
             txtFieldConfirmPassword.setText(confirmPasswordField.getText());
             txtFieldConfirmPassword.setVisible(true);
             confirmPasswordField.setVisible(false);
+        } else {
+            txtFieldPassword.setVisible(false);
+            passwordField.setVisible(true);
+            txtFieldConfirmPassword.setVisible(false);
+            confirmPasswordField.setVisible(true);
         }
-        txtFieldPassword.setVisible(false);
-        passwordField.setVisible(true);
-        txtFieldConfirmPassword.setVisible(false);
-        confirmPasswordField.setVisible(true);
-
     }
 }

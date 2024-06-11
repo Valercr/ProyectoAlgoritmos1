@@ -1,54 +1,59 @@
 package controller;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import ucr.proyecto1.domain.XMLData.PasswordXML;
 import util.Utility;
+public class LogInController {
 
-public class LogInController
-{
-    @javafx.fxml.FXML
+    @FXML
     private TextField txtField_emailAddress;
-    @javafx.fxml.FXML
+    @FXML
     private BorderPane bp;
-//    ArchivoTXTPassword archivoTXTPassword;
-    InformationUserXML informationUserXML;
-//    ArchiveInformationUser archiveInformationUser;
-
-    @javafx.fxml.FXML
+    @FXML
     private PasswordField passwordField;
 
     private PasswordXML passwordXML;
 
-    @javafx.fxml.FXML
+    @FXML
     public void initialize() {
-
-        passwordXML=new PasswordXML();
+        passwordXML = new PasswordXML();
     }
 
-    @javafx.fxml.FXML
+    @FXML
     public void signUpOnAction(ActionEvent actionEvent) {
-        util.UtilityFX.loadPage("signUp.fxml", bp);//Cargar singUp
+        util.UtilityFX.loadPage("signUp.fxml", bp); // Cargar página de registro
     }
 
-    @javafx.fxml.FXML
+    @FXML
     public void logInOnAction(ActionEvent actionEvent) {
         String email = txtField_emailAddress.getText();
         String password = passwordField.getText();
-        if (email.isEmpty() || password.isEmpty())
-            util.UtilityFX.alert("Error", "Complete todos los espacios");
-        else{
-//            if (archivoTXTPassword.authenticateUser(email, password))
-            if (passwordXML.authenticateUser(email, password)){
-                if (Utility.roleUsuarioActivo.equalsIgnoreCase("administrative"))
-                    util.UtilityFX.loadPage("menuManager.fxml", bp);
-                else if (Utility.roleUsuarioActivo.equalsIgnoreCase("instructor"))
-                    util.UtilityFX.loadPage("menuInstructor.fxml", bp);
-                else util.UtilityFX.loadPage("menuUser.fxml", bp);
-            }
-            else util.UtilityFX.alert("Error", "Usuario o contraseña incorrectos");
-        }
 
+        if (email.isEmpty() || password.isEmpty()) {
+            util.UtilityFX.alert("Error", "Complete todos los espacios");
+        } else {
+            if (passwordXML.authenticateUser(email, password)) {
+                switch (Utility.roleUsuarioActivo.toLowerCase()) {
+                    case "administrative":
+                        util.UtilityFX.loadPage("menuManager.fxml", bp);
+                        break;
+                    case "instructor":
+                        util.UtilityFX.loadPage("menuInstructor.fxml", bp);
+                        break;
+                    case "user":
+                        util.UtilityFX.loadPage("menuUser.fxml", bp);
+                        break;
+                    default:
+                        util.UtilityFX.alert("Error", "Rol de usuario desconocido");
+                        break;
+                }
+            } else {
+                util.UtilityFX.alert("Error", "Usuario o contraseña incorrectos");
+            }
+        }
     }
 }

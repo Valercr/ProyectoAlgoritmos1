@@ -6,6 +6,7 @@
       <root url="jar://$USER_HOME$/Downloads/lib/lib/javax.ejb.jar!/" />
       <root url="jar://$USER_HOME$/Downloads/lib/lib/javax.faces-api-2.0.jar!/" />
       <root url="jar://$USER_HOME$/Downloads/lib/lib/mail.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/itextpdf-5.5.13.2.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

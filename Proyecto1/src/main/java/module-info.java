@@ -5,6 +5,8 @@ module ac.cr.ucr.proyecto1 {
     requires java.mail;
     requires java.logging;
     requires java.xml;
+    requires javax.inject;
+    requires itextpdf;
 
 
     opens ucr.proyecto1 to javafx.fxml;
